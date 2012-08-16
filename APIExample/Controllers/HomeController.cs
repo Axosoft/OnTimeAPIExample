@@ -11,11 +11,35 @@ namespace APIExample.Controllers
 
         public ActionResult Index()
         {
-			// Redirect end-user to OnTime's auth page
-			var authUrl = new UriBuilder(MvcApplication.Settings.OnTimeUrl);
-			authUrl.Path += "auth.aspx";
-			return Redirect(authUrl.ToString());
+			// check to see whether we already have an access token
+			var accessToken = (string)Session["AccessToken"];
+
+			if(string.IsNullOrEmpty(accessToken))
+				// no access token - redirect to the OAuth controller
+				return RedirectToAction("ObtainVerificationCode", "OAuth");
+
+			return View();
         }
+
+		public ActionResult LogOut()
+		{
+			Session.Remove("AccessToken");
+
+			return null;
+		}
+
+		public ActionResult GetProjects()
+		{
+			var accessToken = (string)Session["AccessToken"];
+
+			// make an API call to OnTime
+			var apiCallUrl = new UriBuilder(MvcApplication.Settings.OnTimeUrl);
+			apiCallUrl.Path += "api/v1/projects";
+			apiCallUrl.Query = "oauth_token=" + accessToken;
+
+			return Redirect(apiCallUrl.ToString());
+
+		}
 
     }
 }
