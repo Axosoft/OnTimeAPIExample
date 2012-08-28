@@ -14,9 +14,9 @@ namespace APIExample.Controllers
 			// check to see whether we already have an access token
 			var accessToken = (string)Session["AccessToken"];
 
-			if(string.IsNullOrEmpty(accessToken))
-				// no access token - redirect to the OAuth controller
-				return RedirectToAction("ObtainVerificationCode", "OAuth");
+			if(!string.IsNullOrEmpty(accessToken))
+				// we do have an access token - redirect to the Api controller
+				return RedirectToAction("Index", "Api");
 
 			return View();
         }
@@ -26,19 +26,6 @@ namespace APIExample.Controllers
 			Session.Remove("AccessToken");
 
 			return null;
-		}
-
-		public ActionResult GetProjects()
-		{
-			var accessToken = (string)Session["AccessToken"];
-
-			// make an API call to OnTime
-			var apiCallUrl = new UriBuilder(MvcApplication.Settings.OnTimeUrl);
-			apiCallUrl.Path += "api/v1/projects";
-			apiCallUrl.Query = "oauth_token=" + accessToken;
-
-			return Redirect(apiCallUrl.ToString());
-
 		}
 
     }

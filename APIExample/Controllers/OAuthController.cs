@@ -12,6 +12,8 @@ namespace APIExample.Controllers
 {
     public class OAuthController : Controller
     {
+		#region Authorization Code grant type
+
         public ActionResult ObtainVerificationCode()
         {
 			// Redirect end-user to OnTime's auth page
@@ -29,14 +31,39 @@ namespace APIExample.Controllers
 			return Redirect(authUrl.ToString());
         }
 
-		public ActionResult ObtainAccessToken(string code)
+		public ActionResult AuthorizationCodeCallback(string code)
+		{
+			return ObtainAccessToken("grant_type=authorization_code&code=" + HttpUtility.UrlEncode(code));
+		}
+
+		#endregion
+
+		#region Password grant type
+
+		[HttpGet]
+		public ActionResult ObtainPassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult ObtainPassword(string username, string password)
+		{
+			return ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}",
+				HttpUtility.UrlEncode(username),
+				HttpUtility.UrlEncode(password)));
+		}
+
+		#endregion
+
+		private ActionResult ObtainAccessToken(string parameters)
 		{
 			var settings = MvcApplication.Settings;
 
 			var tokenUrl = new UriBuilder(settings.OnTimeUrl);
 			tokenUrl.Path += "api/v1/auth/oauth2";
-			tokenUrl.Query += string.Format("code={0}&client_id={1}&client_secret={2}&redirect_uri={3}",
-				HttpUtility.UrlEncode(code),
+			tokenUrl.Query += string.Format("{0}&client_id={1}&client_secret={2}&redirect_uri={3}",
+				parameters,
 				HttpUtility.UrlEncode(settings.ClientId),
 				HttpUtility.UrlEncode(settings.ClientSecret),
 				HttpUtility.UrlEncode(GetRedirectUri())
@@ -61,7 +88,7 @@ namespace APIExample.Controllers
 		private string GetRedirectUri()
 		{
 			var redirectUri = new UriBuilder(Request.Url);
-			redirectUri.Path = Request.ApplicationPath + "OAuth/ObtainAccessToken";
+			redirectUri.Path = Request.ApplicationPath + "OAuth/AuthorizationCodeCallback";
 			redirectUri.Query = null;
 			return redirectUri.ToString();
 		}
