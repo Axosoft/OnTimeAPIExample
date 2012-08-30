@@ -25,7 +25,7 @@ namespace APIExample.Controllers
 		{
 			Session.Remove("AccessToken");
 
-			return null;
+			return RedirectToAction("Index");
 		}
 
     }

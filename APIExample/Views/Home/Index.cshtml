@@ -2,5 +2,13 @@
     ViewBag.Title = "Index";
 }
 
-@Html.ActionLink("Log in using authorization code", "ObtainVerificationCode", "OAuth")
-@Html.ActionLink("Log in using password", "ObtainPassword", "OAuth")
+<div class="container">
+	<div class="row">
+		<div class="span3 box-shadow">@Html.ActionLink("Log in using authorization code", "ObtainVerificationCode", "OAuth")</div>
+		<div class="span3 box-shadow">@Html.ActionLink("Log in using password", "ObtainPassword", "OAuth")</div>
+	</div>
+	<div class="row">
+		<div class="span3">This method will redirect you to the OnTime website to enter your OnTime username and password (if needed), and ask for your permission to give this app access to your OnTime data.</div>
+		<div class="span3">This method will take your username and password on this site, and exchange them for an OnTime OAuth access token.</div>
+	</div>
+</div>

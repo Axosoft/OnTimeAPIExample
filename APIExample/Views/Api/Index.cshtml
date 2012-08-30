@@ -2,7 +2,8 @@
     ViewBag.Title = "Index";
 }
 
-@Html.ActionLink("Log Out", "LogOut", "Home")
-@Html.ActionLink("Make OnTime GET projects call", "GetProjects")
+
+@Html.ActionLink("Log Out", "LogOut", "Home", htmlAttributes: new {@class = "btn"})
+@Html.ActionLink("Make OnTime GET projects call", "GetProjects", null, htmlAttributes: new {@class = "btn"})
 
 
