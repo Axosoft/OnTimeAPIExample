@@ -12,10 +12,12 @@ namespace OnTimeApi
 	public class OnTime
 	{
 		Settings settings;
+		string accessToken;
 
-		public OnTime(Settings settings)
+		public OnTime(Settings settings, string accessToken = null)
 		{
 			this.settings = settings;
+			this.accessToken = accessToken;
 		}
 
 		public string ObtainAccessToken(string parameters)
@@ -32,12 +34,25 @@ namespace OnTimeApi
 			{
 				var resultString = webClient.DownloadString(tokenUrl.Uri);
 				var result = Deserialize<AuthResponse>(resultString);
+				accessToken = result.access_token;
 				return result.access_token;
 			} catch (WebException e)
 			{
-				var response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
-				throw new OnTimeException(response.message);
+				MessageResponse response = null;
+				if(e.Response != null)
+					response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
+				throw new OnTimeException(response != null ? response.message : null);
 			}
+		}
+
+		public string GetUrl(string apiCall)
+		{
+			var apiCallUrl = new UriBuilder(settings.OnTimeUrl);
+			apiCallUrl.Path += "api/v1/" + apiCall;
+			if(accessToken != null)
+				apiCallUrl.Query = "oauth_token=" + accessToken;
+
+			return apiCallUrl.ToString();
 		}
 
 		private T DeserializeResponse<T>(Stream stream)

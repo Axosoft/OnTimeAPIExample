@@ -1,4 +1,5 @@
-﻿@{
+﻿@model OnTimeApi.OnTime
+@{
     ViewBag.Title = "Index";
 }
 
@@ -6,4 +7,7 @@
 @Html.ActionLink("Log Out", "LogOut", "Home", htmlAttributes: new {@class = "btn"})
 @Html.ActionLink("Make OnTime GET projects call", "GetProjects", null, htmlAttributes: new {@class = "btn"})
 
-
+<form action="@Model.GetUrl("attachments")" enctype="multipart/form-data" method="post">
+<input type="file" name="file">
+<input type="submit" value="Upload Attachment">
+</form> 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using OnTimeApi;
 
 namespace APIExample.Controllers
 {
@@ -13,19 +14,15 @@ namespace APIExample.Controllers
 
         public ActionResult Index()
         {
-            return View();
+			var OnTime = new OnTime(MvcApplication.Settings, (string)Session["AccessToken"]);
+            return View(OnTime);
         }
 
 		public ActionResult GetProjects()
 		{
-			var accessToken = (string)Session["AccessToken"];
-
 			// make an API call to OnTime
-			var apiCallUrl = new UriBuilder(MvcApplication.Settings.OnTimeUrl);
-			apiCallUrl.Path += "api/v1/projects";
-			apiCallUrl.Query = "oauth_token=" + accessToken;
-
-			return Redirect(apiCallUrl.ToString());
+			var OnTime = new OnTime(MvcApplication.Settings, (string)Session["AccessToken"]);
+			return Redirect(OnTime.GetUrl("projects"));
 		}
 
     }
