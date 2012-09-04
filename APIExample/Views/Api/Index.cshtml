@@ -3,11 +3,43 @@
     ViewBag.Title = "Index";
 }
 
+<div class="container">
+	<div class="navbar">
+	  <div class="navbar-inner">
+		<a class="brand" href="#">OnTime API Example</a>
+		<ul class="nav">
+		  <li>@Html.ActionLink("Log Out", "LogOut", "Home")</li>
+		</ul>
+	  </div>
+	</div>
 
-@Html.ActionLink("Log Out", "LogOut", "Home", htmlAttributes: new {@class = "btn"})
-@Html.ActionLink("Make OnTime GET projects call", "GetProjects", null, htmlAttributes: new {@class = "btn"})
+	<h2>Example GET API calls</h2>
+	<select id="api-get-url">
+		<option value="@Url.Action("GetProjects")">projects</option>
+	</select>
 
-<form action="@Model.GetUrl("attachments")" enctype="multipart/form-data" method="post">
-<input type="file" name="file">
-<input type="submit" value="Upload Attachment">
-</form> 
+	<a href="#" class="btn" id="api-get">GET</a>
+	<div>
+		<textarea id="api-get-results" disabled="disabled"></textarea>
+	</div>
+
+	<h2>Example Attachment Upload</h2>
+	<form action="@Model.GetUrl("attachments")" enctype="multipart/form-data" method="post">
+	<input type="file" name="file" class="input-file">
+	<input type="submit" value="Upload Attachment" class="btn"/>
+	</form>
+</div>
+
+<script type="text/javascript">
+$('#api-get').click(function(event) {
+	event.preventDefault();
+
+	var url = $('#api-get-url').val();
+	$.ajax(url, {
+		dataType: "text",
+		success: function(result) {
+			$('#api-get-results').val(result);
+		}
+	});
+});
+</script>
