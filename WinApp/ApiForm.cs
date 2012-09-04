@@ -56,5 +56,24 @@ namespace WinApp
 				ItemsGridView.Rows.Add(item.name);
 		}
 
+		private void AddButton_Click(object sender, EventArgs e)
+		{
+			var item = new Item
+			{
+				name = NewItemName.Text,
+				project = new Project
+				{
+					id = 1
+				}
+			};
+
+			var webClient = new WebClient();
+			var encoding = new System.Text.UTF8Encoding();
+			webClient.Encoding = encoding;
+			webClient.Headers.Add("Content-Type","application/json");
+
+			webClient.UploadData(OnTime.GetUrl("defects"), encoding.GetBytes(JsonConvert.SerializeObject(new { item = item })));
+		}
+
 	}
 }

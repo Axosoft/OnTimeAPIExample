@@ -23,5 +23,11 @@ namespace OnTimeApi
 	public class Item
 	{
 		public string name;
+		public Project project;
+	}
+
+	public class Project
+	{
+		public int id;
 	}
 }
