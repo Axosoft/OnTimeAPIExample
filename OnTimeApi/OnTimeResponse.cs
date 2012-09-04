@@ -14,4 +14,14 @@ namespace OnTimeApi
 	{
 		public string access_token;
 	}
+
+	public class DataResponse<T>
+	{
+		public List<T> data;
+	}
+
+	public class Item
+	{
+		public string name;
+	}
 }

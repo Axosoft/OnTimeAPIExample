@@ -13,9 +13,13 @@ namespace WinApp
 {
 	public partial class LoginForm : Form
 	{
+		public OnTime OnTime { get; private set; }
+
 		public LoginForm()
 		{
 			InitializeComponent();
+
+			AcceptButton = LoginButton;
 		}
 
 		private void LoginButton_Click(object sender, EventArgs e)
@@ -26,6 +30,9 @@ namespace WinApp
 				OnTime.ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}",
 					HttpUtility.UrlEncode(LoginIdText.Text),
 					HttpUtility.UrlEncode(PasswordText.Text)));
+
+				this.OnTime = OnTime;
+				Close();
 			} catch (OnTimeException ex)
 			{
 				MessageBox.Show(
@@ -35,5 +42,7 @@ namespace WinApp
 					MessageBoxIcon.Error);
 			}
 		}
+
+		
 	}
 }

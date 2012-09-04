@@ -26,7 +26,7 @@ namespace WinApp
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new LoginForm());
+			Application.Run(new ApiForm()); // not passing the form to Run so closing it doesn't exit the app
 		}
 
 
