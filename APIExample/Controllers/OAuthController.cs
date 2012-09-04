@@ -25,7 +25,7 @@ namespace APIExample.Controllers
 			authUrl.Path += "auth.aspx";
 
 			// Add OAuth2 parameters
-			authUrl.Query = string.Format("response_type=code&client_id={0}&redirect_uri={1}",
+			authUrl.Query = string.Format("response_type=code&client_id={0}&redirect_uri={1}&scope=read%20write",
 				HttpUtility.UrlEncode(settings.ClientId),
 				HttpUtility.UrlEncode(GetRedirectUri())
 			);
@@ -35,7 +35,7 @@ namespace APIExample.Controllers
 
 		public ActionResult AuthorizationCodeCallback(string code)
 		{
-			return ObtainAccessToken(string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}",
+			return ObtainAccessToken(string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&scope=read%20write",
 				HttpUtility.UrlEncode(code),
 				HttpUtility.UrlEncode(GetRedirectUri())
 			));
@@ -54,7 +54,7 @@ namespace APIExample.Controllers
 		[HttpPost]
 		public ActionResult ObtainPassword(string username, string password)
 		{
-			return ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}",
+			return ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}&scope=read%20write",
 				HttpUtility.UrlEncode(username),
 				HttpUtility.UrlEncode(password)));
 		}

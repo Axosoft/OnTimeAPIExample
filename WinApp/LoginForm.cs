@@ -27,7 +27,7 @@ namespace WinApp
 			var OnTime = new OnTime(Program.Settings);
 			try
 			{
-				OnTime.ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}",
+				OnTime.ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}&scope=read%20write",
 					HttpUtility.UrlEncode(LoginIdText.Text),
 					HttpUtility.UrlEncode(PasswordText.Text)));
 
