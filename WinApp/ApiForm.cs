@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using OnTimeApi;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace WinApp
 {
@@ -16,6 +17,7 @@ namespace WinApp
 	{
 		OnTime OnTime;
 		LoginForm LoginForm;
+		ArrayList Projects = new ArrayList();
 
 		public ApiForm()
 		{
@@ -25,6 +27,9 @@ namespace WinApp
 			LoginForm.FormClosed += new FormClosedEventHandler(loginForm_FormClosed);
 
 			Shown += new EventHandler(ApiForm_Shown);
+
+			ProjectComboBox.ValueMember = "id";
+			ProjectComboBox.DisplayMember = "name";
 		}
 
 		void ApiForm_Shown(object sender, EventArgs e)
@@ -39,6 +44,7 @@ namespace WinApp
 				OnTime = LoginForm.OnTime;
 				LoginForm = null;
 				GetItems();
+				GetProjects();
 			}
 			else
 				Close();
@@ -56,6 +62,19 @@ namespace WinApp
 				ItemsGridView.Rows.Add(item.name);
 		}
 
+		void GetProjects()
+		{
+			var webClient = new WebClient();
+
+			var resultString = webClient.DownloadString(OnTime.GetUrl("projects"));
+
+			var result = JsonConvert.DeserializeObject<DataResponse<Project>>(resultString);
+			
+			Projects.Clear();
+			Projects.AddRange(result.data);
+			ProjectComboBox.DataSource = Projects;
+		}
+
 		private void AddButton_Click(object sender, EventArgs e)
 		{
 			var item = new Item
@@ -63,7 +82,7 @@ namespace WinApp
 				name = NewItemName.Text,
 				project = new Project
 				{
-					id = 1
+					id = (int)ProjectComboBox.SelectedValue
 				}
 			};
 

@@ -34,6 +34,9 @@
 			this.AddButton = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.NewItemName = new System.Windows.Forms.TextBox();
+			this.ProjectComboBox = new System.Windows.Forms.ComboBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label4 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -68,7 +71,7 @@
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(681, 241);
+			this.AddButton.Location = new System.Drawing.Point(681, 296);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(75, 23);
 			this.AddButton.TabIndex = 2;
@@ -87,16 +90,46 @@
 			// 
 			// NewItemName
 			// 
-			this.NewItemName.Location = new System.Drawing.Point(16, 243);
+			this.NewItemName.Location = new System.Drawing.Point(138, 243);
 			this.NewItemName.Name = "NewItemName";
-			this.NewItemName.Size = new System.Drawing.Size(659, 20);
+			this.NewItemName.Size = new System.Drawing.Size(618, 20);
 			this.NewItemName.TabIndex = 4;
+			// 
+			// ProjectComboBox
+			// 
+			this.ProjectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ProjectComboBox.FormattingEnabled = true;
+			this.ProjectComboBox.Location = new System.Drawing.Point(138, 269);
+			this.ProjectComboBox.Name = "ProjectComboBox";
+			this.ProjectComboBox.Size = new System.Drawing.Size(618, 21);
+			this.ProjectComboBox.TabIndex = 5;
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(13, 246);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(35, 13);
+			this.label3.TabIndex = 6;
+			this.label3.Text = "Name";
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(13, 272);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(40, 13);
+			this.label4.TabIndex = 7;
+			this.label4.Text = "Project";
 			// 
 			// ApiForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(767, 277);
+			this.ClientSize = new System.Drawing.Size(767, 331);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.ProjectComboBox);
 			this.Controls.Add(this.NewItemName);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.AddButton);
@@ -119,5 +152,8 @@
 		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox NewItemName;
+		private System.Windows.Forms.ComboBox ProjectComboBox;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
 	}
 }
