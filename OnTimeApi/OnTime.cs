@@ -6,12 +6,19 @@ using System.Web;
 using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace OnTimeApi
 {
+	
+	/// <summary>
+	/// Helper class to access the OnTime API.  Provides simple synchronous helpers for GET and POST API calls.
+	/// </summary>
 	public class OnTime
 	{
+		// settings such as the OnTime URL, client id and secret
 		Settings settings;
+		// the access token given by the OnTime API to grant access to resources
 		string accessToken;
 
 		public OnTime(Settings settings, string accessToken = null)
@@ -20,37 +27,68 @@ namespace OnTimeApi
 			this.accessToken = accessToken;
 		}
 
-		public string ObtainAccessToken(string parameters)
+		public string ObtainAccessToken(IEnumerable<KeyValuePair<string, string>> parameters)
 		{
-			var tokenUrl = new UriBuilder(settings.OnTimeUrl);
-			tokenUrl.Path += "api/v1/auth/oauth2";
-			tokenUrl.Query += string.Format("{0}&client_id={1}&client_secret={2}",
-				parameters,
-				HttpUtility.UrlEncode(settings.ClientId),
-				HttpUtility.UrlEncode(settings.ClientSecret)
-			);
+			parameters = parameters.Concat(new Dictionary<string,string> {
+				{ "client_id", settings.ClientId },
+				{ "client_secret", settings.ClientSecret }
+			});
+			
+			var authResponse = Get<AuthResponse>("auth/oauth2", parameters);
+			
+			accessToken = authResponse.access_token;
+			return authResponse.access_token;
+		}
+
+		#region GET / POST helpers
+
+		public ResponseT Get<ResponseT>(string resource, IEnumerable<KeyValuePair<string, string>> parameters = null)
+		{
 			var webClient = new WebClient();
 			try
 			{
-				var resultString = webClient.DownloadString(tokenUrl.Uri);
-				var result = Deserialize<AuthResponse>(resultString);
-				accessToken = result.access_token;
-				return result.access_token;
+				var resultString = webClient.DownloadString(GetUrl(resource, parameters));
+				return Deserialize<ResponseT>(resultString);
 			} catch (WebException e)
 			{
 				MessageResponse response = null;
 				if(e.Response != null)
 					response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
-				throw new OnTimeException(response != null ? response.message : null);
+				throw new OnTimeException(response != null ? response.message : null, e);
 			}
 		}
 
-		public string GetUrl(string apiCall)
+		public void Post(string resource, object content, IEnumerable<KeyValuePair<string, string>> parameters = null)
+		{
+			var webClient = new WebClient();
+			var encoding = new System.Text.UTF8Encoding();
+			webClient.Encoding = encoding;
+			webClient.Headers.Add("Content-Type","application/json");
+
+			var response = webClient.UploadData(GetUrl(resource, parameters), encoding.GetBytes(JsonConvert.SerializeObject(content)));
+		}
+
+
+		#endregion
+
+		public string GetUrl(string apiCall, IEnumerable<KeyValuePair<string, string>> parameters = null)
 		{
 			var apiCallUrl = new UriBuilder(settings.OnTimeUrl);
 			apiCallUrl.Path += "api/v1/" + apiCall;
+			
+			var finalParameters = new Dictionary<string, string>();
+			
+			if(parameters != null)
+				foreach(var parameter in parameters)
+					finalParameters.Add(parameter.Key, parameter.Value);
+
 			if(accessToken != null)
-				apiCallUrl.Query = "oauth_token=" + accessToken;
+				finalParameters.Add("oauth_token", accessToken);
+
+			apiCallUrl.Query = string.Join(
+				"&",
+				(from parameter in finalParameters select (parameter.Key + "=" + HttpUtility.UrlEncode(parameter.Value))).ToArray()
+			);
 
 			return apiCallUrl.ToString();
 		}
@@ -66,8 +104,7 @@ namespace OnTimeApi
 
 		private T Deserialize<T>(string content)
 		{
-			var serializer = new JavaScriptSerializer();
-			return serializer.Deserialize<T>(content);
+			return JsonConvert.DeserializeObject<T>(content);
 		}
 	}
 }

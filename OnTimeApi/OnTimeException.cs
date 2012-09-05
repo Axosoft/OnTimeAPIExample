@@ -7,7 +7,7 @@ namespace OnTimeApi
 {
 	public class OnTimeException : Exception
 	{
-		public OnTimeException(string message) : base(message)
+		public OnTimeException(string message, Exception innerException = null) : base(message, innerException)
 		{
 		}
 	}

@@ -37,6 +37,8 @@ namespace WinApp
 			ItemsGridView.DataSource = Items;
 		}
 
+		#region Event handlers
+
 		void ApiForm_Shown(object sender, EventArgs e)
 		{
 			LoginForm.ShowDialog();			
@@ -55,32 +57,6 @@ namespace WinApp
 				Close();
 		}
 
-		void GetItems()
-		{
-			var webClient = new WebClient();
-
-			var resultString = webClient.DownloadString(OnTime.GetUrl("defects"));
-
-			var result = JsonConvert.DeserializeObject<DataResponse<Item>>(resultString);
-
-			Items.Clear();
-			foreach(var item in result.data)
-				Items.Add(item);
-		}
-
-		void GetProjects()
-		{
-			var webClient = new WebClient();
-
-			var resultString = webClient.DownloadString(OnTime.GetUrl("projects"));
-
-			var result = JsonConvert.DeserializeObject<DataResponse<Project>>(resultString);
-			
-			Projects.Clear();
-			foreach(var project in result.data)
-				Projects.Add(project);
-		}
-
 		private void AddButton_Click(object sender, EventArgs e)
 		{
 			var item = new Item
@@ -92,14 +68,30 @@ namespace WinApp
 				}
 			};
 
-			var webClient = new WebClient();
-			var encoding = new System.Text.UTF8Encoding();
-			webClient.Encoding = encoding;
-			webClient.Headers.Add("Content-Type","application/json");
-
-			webClient.UploadData(OnTime.GetUrl("defects"), encoding.GetBytes(JsonConvert.SerializeObject(new { item = item })));
+			OnTime.Post("defects", new { item = item });
 
 			GetItems();
+		}
+
+		#endregion
+		
+		void GetItems()
+		{
+			var result = OnTime.Get<DataResponse<Item>>("defects");
+			var webClient = new WebClient();
+
+			Items.Clear();
+			foreach(var item in result.data)
+				Items.Add(item);
+		}
+
+		void GetProjects()
+		{
+			var result = OnTime.Get<DataResponse<Project>>("projects");
+			
+			Projects.Clear();
+			foreach(var project in result.data)
+				Projects.Add(project);
 		}
 	}
 }

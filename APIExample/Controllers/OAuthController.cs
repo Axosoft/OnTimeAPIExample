@@ -35,10 +35,12 @@ namespace APIExample.Controllers
 
 		public ActionResult AuthorizationCodeCallback(string code)
 		{
-			return ObtainAccessToken(string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&scope=read%20write",
-				HttpUtility.UrlEncode(code),
-				HttpUtility.UrlEncode(GetRedirectUri())
-			));
+			return ObtainAccessToken(new Dictionary<string, string> {
+				{ "grant_type", "authorization_code" },
+				{ "code", code },
+				{ "redirect_uri", GetRedirectUri() },
+				{ "scope", "read write" }
+			});
 		}
 
 		#endregion
@@ -54,14 +56,17 @@ namespace APIExample.Controllers
 		[HttpPost]
 		public ActionResult ObtainPassword(string username, string password)
 		{
-			return ObtainAccessToken(string.Format("grant_type=password&username={0}&password={1}&scope=read%20write",
-				HttpUtility.UrlEncode(username),
-				HttpUtility.UrlEncode(password)));
+			return ObtainAccessToken(new Dictionary<string, string> {
+				{ "grant_type", "password" },
+				{ "username", username },
+				{ "password", password },
+				{ "scope", "read write" }
+			});
 		}
 
 		#endregion
 
-		private ActionResult ObtainAccessToken(string parameters)
+		private ActionResult ObtainAccessToken(Dictionary<string, string> parameters)
 		{
 			try
 			{
