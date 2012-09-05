@@ -35,42 +35,13 @@ namespace APIExample.Controllers
 
 		public ActionResult AuthorizationCodeCallback(string code)
 		{
-			return ObtainAccessToken(new Dictionary<string, string> {
-				{ "grant_type", "authorization_code" },
-				{ "code", code },
-				{ "redirect_uri", GetRedirectUri() },
-				{ "scope", "read write" }
-			});
-		}
-
-		#endregion
-
-		#region Password grant type
-
-		[HttpGet]
-		public ActionResult ObtainPassword()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		public ActionResult ObtainPassword(string username, string password)
-		{
-			return ObtainAccessToken(new Dictionary<string, string> {
-				{ "grant_type", "password" },
-				{ "username", username },
-				{ "password", password },
-				{ "scope", "read write" }
-			});
-		}
-
-		#endregion
-
-		private ActionResult ObtainAccessToken(Dictionary<string, string> parameters)
-		{
 			try
 			{
-				Session["AccessToken"] = OnTime.ObtainAccessToken(parameters);
+				Session["AccessToken"] = OnTime.ObtainAccessTokenFromAuthorizationCode(
+					code: code,
+					redirectUri: GetRedirectUri(),
+					scope: "read write"
+				);
 				return RedirectToAction("Index", "Home");
 			}
 			catch(OnTimeException e)
@@ -79,6 +50,8 @@ namespace APIExample.Controllers
 				return null;
 			}
 		}
+
+		#endregion
 
 		private string GetRedirectUri()
 		{

@@ -27,7 +27,27 @@ namespace OnTimeApi
 			this.accessToken = accessToken;
 		}
 
-		public string ObtainAccessToken(IEnumerable<KeyValuePair<string, string>> parameters)
+		public string ObtainAccessTokenFromAuthorizationCode(string code, string redirectUri, string scope)
+		{
+			return ObtainAccessToken(new Dictionary<string, string> {
+				{ "grant_type", "authorization_code" },
+				{ "code", code },
+				{ "redirect_uri", redirectUri },
+				{ "scope", scope }
+			});
+		}
+
+		public string ObtainAccessTokenFromUsernamePassword(string username, string password, string scope)
+		{
+			return ObtainAccessToken(new Dictionary<string, string> {
+				{ "grant_type", "password" },
+				{ "username", username },
+				{ "password", password },
+				{ "scope", scope }
+			});
+		}
+
+		private string ObtainAccessToken(IEnumerable<KeyValuePair<string, string>> parameters)
 		{
 			parameters = parameters.Concat(new Dictionary<string,string> {
 				{ "client_id", settings.ClientId },

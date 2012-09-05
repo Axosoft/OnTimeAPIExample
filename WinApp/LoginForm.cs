@@ -27,12 +27,11 @@ namespace WinApp
 			var OnTime = new OnTime(Program.Settings);
 			try
 			{
-				OnTime.ObtainAccessToken(new Dictionary<string, string> {
-					{ "grant_type", "password" },
-					{ "username", LoginIdText.Text },
-					{ "password", PasswordText.Text },
-					{ "scope", "read write" }
-				});
+				OnTime.ObtainAccessTokenFromUsernamePassword(
+					username: LoginIdText.Text,
+					password: PasswordText.Text,
+					scope: "read write"
+				);
 
 				this.OnTime = OnTime;
 				Close();
