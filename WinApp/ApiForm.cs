@@ -17,7 +17,8 @@ namespace WinApp
 	{
 		OnTime OnTime;
 		LoginForm LoginForm;
-		ArrayList Projects = new ArrayList();
+		BindingList<Project> Projects = new BindingList<Project>();
+		BindingList<Item> Items = new BindingList<Item>();
 
 		public ApiForm()
 		{
@@ -30,6 +31,10 @@ namespace WinApp
 
 			ProjectComboBox.ValueMember = "id";
 			ProjectComboBox.DisplayMember = "name";
+			ProjectComboBox.DataSource = Projects;
+
+			ItemsGridView.AutoGenerateColumns = false;
+			ItemsGridView.DataSource = Items;
 		}
 
 		void ApiForm_Shown(object sender, EventArgs e)
@@ -58,8 +63,9 @@ namespace WinApp
 
 			var result = JsonConvert.DeserializeObject<DataResponse<Item>>(resultString);
 
+			Items.Clear();
 			foreach(var item in result.data)
-				ItemsGridView.Rows.Add(item.name);
+				Items.Add(item);
 		}
 
 		void GetProjects()
@@ -71,8 +77,8 @@ namespace WinApp
 			var result = JsonConvert.DeserializeObject<DataResponse<Project>>(resultString);
 			
 			Projects.Clear();
-			Projects.AddRange(result.data);
-			ProjectComboBox.DataSource = Projects;
+			foreach(var project in result.data)
+				Projects.Add(project);
 		}
 
 		private void AddButton_Click(object sender, EventArgs e)
@@ -92,7 +98,8 @@ namespace WinApp
 			webClient.Headers.Add("Content-Type","application/json");
 
 			webClient.UploadData(OnTime.GetUrl("defects"), encoding.GetBytes(JsonConvert.SerializeObject(new { item = item })));
-		}
 
+			GetItems();
+		}
 	}
 }

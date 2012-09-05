@@ -30,13 +30,14 @@
 		{
 			this.label1 = new System.Windows.Forms.Label();
 			this.ItemsGridView = new System.Windows.Forms.DataGridView();
-			this._Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.AddButton = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.NewItemName = new System.Windows.Forms.TextBox();
 			this.ProjectComboBox = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
+			this._Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Project = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -55,19 +56,14 @@
 			this.ItemsGridView.AllowUserToDeleteRows = false;
 			this.ItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.ItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this._Name});
+            this._Name,
+            this.Project});
 			this.ItemsGridView.Location = new System.Drawing.Point(12, 40);
 			this.ItemsGridView.Name = "ItemsGridView";
 			this.ItemsGridView.ReadOnly = true;
+			this.ItemsGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.ItemsGridView.Size = new System.Drawing.Size(744, 150);
 			this.ItemsGridView.TabIndex = 1;
-			// 
-			// _Name
-			// 
-			this._Name.HeaderText = "Name";
-			this._Name.Name = "_Name";
-			this._Name.ReadOnly = true;
-			this._Name.Width = 700;
 			// 
 			// AddButton
 			// 
@@ -122,6 +118,22 @@
 			this.label4.TabIndex = 7;
 			this.label4.Text = "Project";
 			// 
+			// _Name
+			// 
+			this._Name.DataPropertyName = "name";
+			this._Name.HeaderText = "Name";
+			this._Name.Name = "_Name";
+			this._Name.ReadOnly = true;
+			this._Name.Width = 500;
+			// 
+			// Project
+			// 
+			this.Project.DataPropertyName = "project";
+			this.Project.HeaderText = "Project";
+			this.Project.Name = "Project";
+			this.Project.ReadOnly = true;
+			this.Project.Width = 200;
+			// 
 			// ApiForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,12 +160,13 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.DataGridView ItemsGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
-		private System.Windows.Forms.DataGridViewTextBoxColumn _Name;
 		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox NewItemName;
 		private System.Windows.Forms.ComboBox ProjectComboBox;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.DataGridViewTextBoxColumn _Name;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Project;
 	}
 }
