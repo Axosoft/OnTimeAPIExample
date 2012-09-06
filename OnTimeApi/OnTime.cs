@@ -121,7 +121,7 @@ namespace OnTimeApi
 			webClient.Encoding = encoding;
 			webClient.Headers.Add("Content-Type","application/json");
 
-			var response = webClient.UploadData(GetUrl(resource, parameters), encoding.GetBytes(JsonConvert.SerializeObject(content)));
+			var response = webClient.UploadData(GetUrl(resource), encoding.GetBytes(JsonConvert.SerializeObject(content)));
 		}
 
 
