@@ -22,7 +22,7 @@ namespace APIExample.Controllers
 			var settings = MvcApplication.Settings;
 
 			var authUrl = new UriBuilder(settings.OnTimeUrl);
-			authUrl.Path += "auth.aspx";
+			authUrl.Path += "auth";
 
 			// Add OAuth2 parameters
 			authUrl.Query = string.Format("response_type=code&client_id={0}&redirect_uri={1}&scope=read%20write",
