@@ -1,26 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using OnTimeApi;
-using System.Web;
 
 namespace WinApp
 {
-	public partial class LoginForm : Form
+	public partial class LoginControl : UserControl
 	{
-		public OnTime OnTime { get; private set; }
+		public class LoginEventArgs : EventArgs
+		{
+			public OnTime OnTime;
 
-		public LoginForm()
+			public LoginEventArgs(OnTime onTime)
+			{
+				OnTime = onTime;
+			}
+		}
+
+		public Button AcceptButton { get { return LoginButton; } }
+		
+		public LoginControl()
 		{
 			InitializeComponent();
-
-			AcceptButton = LoginButton;
 		}
+
+
+		public event EventHandler<LoginEventArgs> LoggedIn;
 
 		private void LoginButton_Click(object sender, EventArgs e)
 		{
@@ -33,8 +43,7 @@ namespace WinApp
 					scope: "read write"
 				);
 
-				this.OnTime = OnTime;
-				Close();
+				LoggedIn(this, new LoginEventArgs(OnTime));
 			} catch (OnTimeException ex)
 			{
 				MessageBox.Show(
@@ -44,7 +53,5 @@ namespace WinApp
 					MessageBoxIcon.Error);
 			}
 		}
-
-		
 	}
 }

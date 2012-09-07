@@ -29,9 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.label5 = new System.Windows.Forms.Label();
-			this.ItemsControl = new WinApp.ItemsControl();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.loginControl = new WinApp.LoginControl();
 			this.updateConfigControl = new WinApp.UpdateConfigControl();
+			this.ItemsControl = new WinApp.ItemsControl();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -47,22 +48,22 @@
 			this.label5.TabIndex = 8;
 			this.label5.Text = "OnTime Defects Explorer";
 			// 
-			// ItemsControl
-			// 
-			this.ItemsControl.Location = new System.Drawing.Point(0, 0);
-			this.ItemsControl.Name = "ItemsControl";
-			this.ItemsControl.Size = new System.Drawing.Size(782, 335);
-			this.ItemsControl.TabIndex = 9;
-			this.ItemsControl.Visible = false;
-			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.loginControl);
 			this.panel1.Controls.Add(this.updateConfigControl);
 			this.panel1.Controls.Add(this.ItemsControl);
 			this.panel1.Location = new System.Drawing.Point(0, 52);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(785, 335);
 			this.panel1.TabIndex = 10;
+			// 
+			// loginControl
+			// 
+			this.loginControl.Location = new System.Drawing.Point(221, 91);
+			this.loginControl.Name = "loginControl";
+			this.loginControl.Size = new System.Drawing.Size(338, 150);
+			this.loginControl.TabIndex = 11;
 			// 
 			// updateConfigControl
 			// 
@@ -72,6 +73,14 @@
 			this.updateConfigControl.Size = new System.Drawing.Size(785, 335);
 			this.updateConfigControl.TabIndex = 10;
 			this.updateConfigControl.Visible = false;
+			// 
+			// ItemsControl
+			// 
+			this.ItemsControl.Location = new System.Drawing.Point(0, 0);
+			this.ItemsControl.Name = "ItemsControl";
+			this.ItemsControl.Size = new System.Drawing.Size(782, 335);
+			this.ItemsControl.TabIndex = 9;
+			this.ItemsControl.Visible = false;
 			// 
 			// ApiForm
 			// 
@@ -95,5 +104,6 @@
 		private ItemsControl ItemsControl;
 		private System.Windows.Forms.Panel panel1;
 		private UpdateConfigControl updateConfigControl;
+		private LoginControl loginControl;
 	}
 }

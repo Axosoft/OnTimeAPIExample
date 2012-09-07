@@ -15,8 +15,6 @@ namespace WinApp
 {
 	public partial class ApiForm : Form
 	{
-		LoginForm LoginForm;
-
 		public ApiForm()
 		{
 			InitializeComponent();
@@ -32,30 +30,33 @@ namespace WinApp
 			}
 			else
 			{
-				LoginForm = new LoginForm();
-				LoginForm.FormClosed += new FormClosedEventHandler(loginForm_FormClosed);
-
-				Shown += new EventHandler(ApiForm_Shown);
+				// they have been entered - allow the end user to log in
+				loginControl.Visible = true;
+				loginControl.LoggedIn += new EventHandler<LoginControl.LoginEventArgs>(loginControl_LoggedIn);
+				AcceptButton = loginControl.AcceptButton;
 			}
+		}
+
+		void loginControl_LoggedIn(object sender, LoginControl.LoginEventArgs e)
+		{
+			loginControl.Visible = false;
+			ItemsControl.SetOnTime(e.OnTime);
+			ItemsControl.Visible = true;
 		}
 
 		#region Event handlers
 
-		void ApiForm_Shown(object sender, EventArgs e)
-		{
-			LoginForm.ShowDialog();			
-		}
 
 		void loginForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(LoginForm.OnTime != null)
-			{
-				ItemsControl.SetOnTime(LoginForm.OnTime);
-				ItemsControl.Visible = true;
-				LoginForm = null;
-			}
-			else
-				Close();
+			//if(LoginForm.OnTime != null)
+			//{
+			//    ItemsControl.SetOnTime(LoginForm.OnTime);
+			//    ItemsControl.Visible = true;
+			//    LoginForm = null;
+			//}
+			//else
+			//    Close();
 		}
 
 		#endregion
