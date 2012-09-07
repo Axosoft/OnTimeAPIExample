@@ -39,16 +39,16 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(36, 9);
+			this.label3.Location = new System.Drawing.Point(6, 11);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(266, 13);
+			this.label3.Size = new System.Drawing.Size(317, 13);
 			this.label3.TabIndex = 11;
-			this.label3.Text = "Please log in using your OnTime login ID and password";
+			this.label3.Text = "Please log in with your OnTime credential to retrieve your Defects.";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(36, 71);
+			this.label2.Location = new System.Drawing.Point(6, 73);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(53, 13);
 			this.label2.TabIndex = 10;
@@ -57,7 +57,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(36, 45);
+			this.label1.Location = new System.Drawing.Point(6, 47);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(47, 13);
 			this.label1.TabIndex = 9;
@@ -65,7 +65,7 @@
 			// 
 			// LoginButton
 			// 
-			this.LoginButton.Location = new System.Drawing.Point(227, 118);
+			this.LoginButton.Location = new System.Drawing.Point(248, 114);
 			this.LoginButton.Name = "LoginButton";
 			this.LoginButton.Size = new System.Drawing.Size(75, 23);
 			this.LoginButton.TabIndex = 8;
@@ -75,16 +75,16 @@
 			// 
 			// PasswordText
 			// 
-			this.PasswordText.Location = new System.Drawing.Point(126, 68);
+			this.PasswordText.Location = new System.Drawing.Point(96, 70);
 			this.PasswordText.Name = "PasswordText";
-			this.PasswordText.Size = new System.Drawing.Size(176, 20);
+			this.PasswordText.Size = new System.Drawing.Size(227, 20);
 			this.PasswordText.TabIndex = 7;
 			// 
 			// LoginIdText
 			// 
-			this.LoginIdText.Location = new System.Drawing.Point(126, 42);
+			this.LoginIdText.Location = new System.Drawing.Point(96, 44);
 			this.LoginIdText.Name = "LoginIdText";
-			this.LoginIdText.Size = new System.Drawing.Size(176, 20);
+			this.LoginIdText.Size = new System.Drawing.Size(227, 20);
 			this.LoginIdText.TabIndex = 6;
 			// 
 			// LoginControl
@@ -98,7 +98,7 @@
 			this.Controls.Add(this.PasswordText);
 			this.Controls.Add(this.LoginIdText);
 			this.Name = "LoginControl";
-			this.Size = new System.Drawing.Size(338, 150);
+			this.Size = new System.Drawing.Size(333, 150);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
