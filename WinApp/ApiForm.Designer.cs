@@ -30,6 +30,9 @@
 		{
 			this.label5 = new System.Windows.Forms.Label();
 			this.ItemsControl = new WinApp.ItemsControl();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.updateConfigControl = new WinApp.UpdateConfigControl();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label5
@@ -46,10 +49,29 @@
 			// 
 			// ItemsControl
 			// 
-			this.ItemsControl.Location = new System.Drawing.Point(2, 56);
+			this.ItemsControl.Location = new System.Drawing.Point(0, 0);
 			this.ItemsControl.Name = "ItemsControl";
-			this.ItemsControl.Size = new System.Drawing.Size(782, 334);
+			this.ItemsControl.Size = new System.Drawing.Size(782, 335);
 			this.ItemsControl.TabIndex = 9;
+			this.ItemsControl.Visible = false;
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.updateConfigControl);
+			this.panel1.Controls.Add(this.ItemsControl);
+			this.panel1.Location = new System.Drawing.Point(0, 52);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(785, 335);
+			this.panel1.TabIndex = 10;
+			// 
+			// updateConfigControl
+			// 
+			this.updateConfigControl.BackColor = System.Drawing.Color.White;
+			this.updateConfigControl.Location = new System.Drawing.Point(0, 0);
+			this.updateConfigControl.Name = "updateConfigControl";
+			this.updateConfigControl.Size = new System.Drawing.Size(785, 335);
+			this.updateConfigControl.TabIndex = 10;
+			this.updateConfigControl.Visible = false;
 			// 
 			// ApiForm
 			// 
@@ -57,10 +79,11 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(784, 386);
-			this.Controls.Add(this.ItemsControl);
+			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.label5);
 			this.Name = "ApiForm";
 			this.Text = "OnTime API Example";
+			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -70,5 +93,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
 		private System.Windows.Forms.Label label5;
 		private ItemsControl ItemsControl;
+		private System.Windows.Forms.Panel panel1;
+		private UpdateConfigControl updateConfigControl;
 	}
 }

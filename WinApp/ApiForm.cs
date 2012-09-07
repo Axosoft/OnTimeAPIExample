@@ -21,10 +21,22 @@ namespace WinApp
 		{
 			InitializeComponent();
 
-			LoginForm = new LoginForm();
-			LoginForm.FormClosed += new FormClosedEventHandler(loginForm_FormClosed);
+			// check to see if the ontime base URL, client id, and client secret have been entered into settings.
+			var settings = Program.Settings;
+			if(settings.OnTimeUrl == "https://someaccount.ontimenow.com/" ||
+				settings.ClientId == "00000000-0000-0000-0000-000000000000" ||
+				settings.ClientSecret == "00000000-0000-0000-0000-000000000000")
+			{
+				// they have not been entered - show the instructions
+				updateConfigControl.Visible = true;
+			}
+			else
+			{
+				LoginForm = new LoginForm();
+				LoginForm.FormClosed += new FormClosedEventHandler(loginForm_FormClosed);
 
-			Shown += new EventHandler(ApiForm_Shown);
+				Shown += new EventHandler(ApiForm_Shown);
+			}
 		}
 
 		#region Event handlers
@@ -39,6 +51,7 @@ namespace WinApp
 			if(LoginForm.OnTime != null)
 			{
 				ItemsControl.SetOnTime(LoginForm.OnTime);
+				ItemsControl.Visible = true;
 				LoginForm = null;
 			}
 			else
