@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsControl));
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.ProjectComboBox = new System.Windows.Forms.ComboBox();
@@ -38,7 +39,11 @@
 			this._Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Project = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.label1 = new System.Windows.Forms.Label();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).BeginInit();
+			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label4
@@ -102,7 +107,7 @@
 			this.ItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this._Name,
             this.Project});
-			this.ItemsGridView.Location = new System.Drawing.Point(21, 36);
+			this.ItemsGridView.Location = new System.Drawing.Point(21, 69);
 			this.ItemsGridView.Name = "ItemsGridView";
 			this.ItemsGridView.ReadOnly = true;
 			this.ItemsGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -130,14 +135,45 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(18, 20);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(104, 13);
+			this.label1.Size = new System.Drawing.Size(113, 13);
 			this.label1.TabIndex = 8;
-			this.label1.Text = "Most recent defects:";
+			this.label1.Text = "Displaying Defects for:";
+			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.AutoSize = false;
+			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2});
+			this.toolStrip1.Location = new System.Drawing.Point(21, 41);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.Size = new System.Drawing.Size(744, 25);
+			this.toolStrip1.TabIndex = 16;
+			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// toolStripButton1
+			// 
+			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton1.Name = "toolStripButton1";
+			this.toolStripButton1.Size = new System.Drawing.Size(49, 22);
+			this.toolStripButton1.Text = "Add";
+			this.toolStripButton1.ToolTipText = "Add";
+			// 
+			// toolStripButton2
+			// 
+			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton2.Name = "toolStripButton2";
+			this.toolStripButton2.Size = new System.Drawing.Size(60, 22);
+			this.toolStripButton2.Text = "Delete";
 			// 
 			// ItemsControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.ProjectComboBox);
@@ -149,6 +185,8 @@
 			this.Name = "ItemsControl";
 			this.Size = new System.Drawing.Size(787, 334);
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).EndInit();
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -166,5 +204,8 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn _Name;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Project;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripButton toolStripButton1;
+		private System.Windows.Forms.ToolStripButton toolStripButton2;
 	}
 }
