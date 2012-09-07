@@ -22,9 +22,9 @@ namespace WinApp
 		{
 			InitializeComponent();
 
-			ProjectComboBox.ValueMember = "id";
-			ProjectComboBox.DisplayMember = "name";
-			ProjectComboBox.DataSource = Projects;
+			ProjectComboBox.ComboBox.ValueMember = "id";
+			ProjectComboBox.ComboBox.DisplayMember = "name";
+			ProjectComboBox.ComboBox.DataSource = Projects;
 
 			ItemsGridView.AutoGenerateColumns = false;
 			ItemsGridView.DataSource = Items;
@@ -64,7 +64,7 @@ namespace WinApp
 				name = NewItemName.Text,
 				project = new Project
 				{
-					id = (int)ProjectComboBox.SelectedValue
+					id = (int)ProjectComboBox.ComboBox.SelectedValue
 				}
 			};
 

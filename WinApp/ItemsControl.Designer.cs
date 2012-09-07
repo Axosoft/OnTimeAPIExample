@@ -29,11 +29,8 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsControl));
-			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
-			this.ProjectComboBox = new System.Windows.Forms.ComboBox();
 			this.NewItemName = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.AddButton = new System.Windows.Forms.Button();
 			this.ItemsGridView = new System.Windows.Forms.DataGridView();
 			this._Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,18 +39,12 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.ProjectComboBox = new System.Windows.Forms.ToolStripComboBox();
+			this.label2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).BeginInit();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(22, 268);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(40, 13);
-			this.label4.TabIndex = 15;
-			this.label4.Text = "Project";
 			// 
 			// label3
 			// 
@@ -64,30 +55,12 @@
 			this.label3.TabIndex = 14;
 			this.label3.Text = "Name";
 			// 
-			// ProjectComboBox
-			// 
-			this.ProjectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.ProjectComboBox.FormattingEnabled = true;
-			this.ProjectComboBox.Location = new System.Drawing.Point(147, 265);
-			this.ProjectComboBox.Name = "ProjectComboBox";
-			this.ProjectComboBox.Size = new System.Drawing.Size(618, 21);
-			this.ProjectComboBox.TabIndex = 13;
-			// 
 			// NewItemName
 			// 
 			this.NewItemName.Location = new System.Drawing.Point(147, 239);
 			this.NewItemName.Name = "NewItemName";
 			this.NewItemName.Size = new System.Drawing.Size(618, 20);
 			this.NewItemName.TabIndex = 12;
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(22, 222);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(94, 13);
-			this.label2.TabIndex = 11;
-			this.label2.Text = "Add a new defect:";
 			// 
 			// AddButton
 			// 
@@ -145,7 +118,9 @@
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.toolStripSeparator1,
+            this.ProjectComboBox});
 			this.toolStrip1.Location = new System.Drawing.Point(21, 41);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(744, 25);
@@ -169,14 +144,32 @@
 			this.toolStripButton2.Size = new System.Drawing.Size(60, 22);
 			this.toolStripButton2.Text = "Delete";
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
+			// ProjectComboBox
+			// 
+			this.ProjectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ProjectComboBox.Name = "ProjectComboBox";
+			this.ProjectComboBox.Size = new System.Drawing.Size(121, 25);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(22, 222);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(94, 13);
+			this.label2.TabIndex = 11;
+			this.label2.Text = "Add a new defect:";
+			// 
 			// ItemsControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStrip1);
-			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.ProjectComboBox);
 			this.Controls.Add(this.NewItemName);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.AddButton);
@@ -194,11 +187,8 @@
 
 		#endregion
 
-		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.ComboBox ProjectComboBox;
 		private System.Windows.Forms.TextBox NewItemName;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.DataGridView ItemsGridView;
 		private System.Windows.Forms.DataGridViewTextBoxColumn _Name;
@@ -207,5 +197,8 @@
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripButton toolStripButton2;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripComboBox ProjectComboBox;
+		private System.Windows.Forms.Label label2;
 	}
 }
