@@ -28,6 +28,7 @@ namespace WinApp
 
 			ItemsGridView.AutoGenerateColumns = false;
 			ItemsGridView.DataSource = Items;
+			ItemsGridView.CellEndEdit += new DataGridViewCellEventHandler(ItemsGridView_CellEndEdit);
 		}
 
 		public void SetOnTime(OnTime onTime)
@@ -59,18 +60,37 @@ namespace WinApp
 
 		private void AddButton_Click(object sender, EventArgs e)
 		{
-			var item = new Item
-			{
-				name = NewItemName.Text,
-				project = new Project
-				{
-					id = (int)ProjectComboBox.ComboBox.SelectedValue
-				}
-			};
-
-			OnTime.Post("defects", new { item = item });
-
-			GetItems();
+			Items.Insert(0, new Item());
+			DataGridViewCell newNameCell = ItemsGridView.Rows[0].Cells[0];
+			ItemsGridView.CurrentCell = newNameCell;
+			ItemsGridView.BeginEdit(true);
 		}
+
+		void ItemsGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		{
+			var newItemName = (string)ItemsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+			if(string.IsNullOrEmpty(newItemName))
+			{
+				// no name was entered - cancel add
+				Items.RemoveAt(0);
+			}
+			else
+			{
+				var item = new Item
+				{
+					name = newItemName,
+					project = new Project
+					{
+						id = (int)ProjectComboBox.ComboBox.SelectedValue
+					}
+				};
+
+				OnTime.Post("defects", new { item = item });
+
+				GetItems();
+			}
+		}
+
 	}
 }
