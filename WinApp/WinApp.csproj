@@ -58,33 +58,33 @@
     <Compile Include="ApiForm.Designer.cs">
       <DependentUpon>ApiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ItemsControl.cs">
+    <Compile Include="ApiFormControls\ItemsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ItemsControl.Designer.cs">
+    <Compile Include="ApiFormControls\ItemsControl.Designer.cs">
       <DependentUpon>ItemsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoginControl.cs">
+    <Compile Include="ApiFormControls\LoginControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LoginControl.Designer.cs">
+    <Compile Include="ApiFormControls\LoginControl.Designer.cs">
       <DependentUpon>LoginControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdateConfigControl.cs">
+    <Compile Include="ApiFormControls\UpdateConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UpdateConfigControl.Designer.cs">
+    <Compile Include="ApiFormControls\UpdateConfigControl.Designer.cs">
       <DependentUpon>UpdateConfigControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ApiForm.resx">
       <DependentUpon>ApiForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ItemsControl.resx">
+    <EmbeddedResource Include="ApiFormControls\ItemsControl.resx">
       <DependentUpon>ItemsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginControl.resx">
+    <EmbeddedResource Include="ApiFormControls\LoginControl.resx">
       <DependentUpon>LoginControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -97,7 +97,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UpdateConfigControl.resx">
+    <EmbeddedResource Include="ApiFormControls\UpdateConfigControl.resx">
       <DependentUpon>UpdateConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config">
