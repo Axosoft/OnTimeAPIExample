@@ -22,10 +22,13 @@ namespace WinApp
 		{
 			InitializeComponent();
 
+			// configure project combo box in toolbar
 			ProjectComboBox.ComboBox.ValueMember = "id";
 			ProjectComboBox.ComboBox.DisplayMember = "name";
 			ProjectComboBox.ComboBox.DataSource = Projects;
+			ProjectComboBox.ComboBox.SelectedValueChanged += new EventHandler(ComboBox_SelectedValueChanged);
 
+			// configure the items grid
 			ItemsGridView.AutoGenerateColumns = false;
 			ItemsGridView.DataSource = Items;
 			ItemsGridView.CellEndEdit += new DataGridViewCellEventHandler(ItemsGridView_CellEndEdit);
@@ -35,13 +38,18 @@ namespace WinApp
 		{
 			OnTime = onTime;
 
-			GetItems();
+			// set OnTime host label
+			OnTimeHostLabel.Text = new Uri(OnTime.Settings.OnTimeUrl).Host;
+
 			GetProjects();
+			GetItems();
 		}
 
 		void GetItems()
 		{
-			var result = OnTime.Get<DataResponse<Item>>("defects");
+			var result = OnTime.Get<DataResponse<Item>>("defects", new Dictionary<string, string> {
+				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id.ToString() }
+			});
 			var webClient = new WebClient();
 
 			Items.Clear();
@@ -61,7 +69,7 @@ namespace WinApp
 		private void AddButton_Click(object sender, EventArgs e)
 		{
 			Items.Insert(0, new Item());
-			DataGridViewCell newNameCell = ItemsGridView.Rows[0].Cells[0];
+			DataGridViewCell newNameCell = ItemsGridView.Rows[0].Cells["name"];
 			ItemsGridView.CurrentCell = newNameCell;
 			ItemsGridView.BeginEdit(true);
 		}
@@ -91,6 +99,24 @@ namespace WinApp
 				GetItems();
 			}
 		}
+
+		private void DeleteButton_Click(object sender, EventArgs e)
+		{
+			if(ItemsGridView.SelectedRows.Count > 0)
+			{
+				foreach(DataGridViewRow row in ItemsGridView.SelectedRows)
+				{
+					OnTime.Delete("defects", (int)row.Cells["id"].Value);
+				}
+				GetItems();
+			}
+		}
+
+		void ComboBox_SelectedValueChanged(object sender, EventArgs e)
+		{
+			GetItems();
+		}
+
 
 	}
 }

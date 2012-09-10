@@ -17,13 +17,13 @@ namespace OnTimeApi
 	public class OnTime
 	{
 		// settings such as the OnTime URL, client id and secret
-		Settings settings;
+		public Settings Settings { get; private set; }
 		// the access token given by the OnTime API to grant access to resources
 		string accessToken;
 
 		public OnTime(Settings settings, string accessToken = null)
 		{
-			this.settings = settings;
+			Settings = settings;
 			this.accessToken = accessToken;
 		}
 
@@ -70,8 +70,8 @@ namespace OnTimeApi
 		{
 			// add client id and client secret to the parameters
 			parameters = parameters.Concat(new Dictionary<string,string> {
-				{ "client_id", settings.ClientId },
-				{ "client_secret", settings.ClientSecret }
+				{ "client_id", Settings.ClientId },
+				{ "client_secret", Settings.ClientSecret }
 			});
 			
 			// get the response from the token endpoint
@@ -124,6 +124,12 @@ namespace OnTimeApi
 			var response = webClient.UploadData(GetUrl(resource), encoding.GetBytes(JsonConvert.SerializeObject(content)));
 		}
 
+		public void Delete(string resource, int id)
+		{
+		    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetUrl(resource + "/" + id));
+			request.Method = "DELETE";
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+		}
 
 		#endregion
 
@@ -136,7 +142,7 @@ namespace OnTimeApi
 		/// <returns>The full URL for the resource.</returns>
 		public string GetUrl(string resource, IEnumerable<KeyValuePair<string, string>> parameters = null)
 		{
-			var apiCallUrl = new UriBuilder(settings.OnTimeUrl);
+			var apiCallUrl = new UriBuilder(Settings.OnTimeUrl);
 			apiCallUrl.Path += "api/v1/" + resource;
 			
 			var finalParameters = new Dictionary<string, string>();
