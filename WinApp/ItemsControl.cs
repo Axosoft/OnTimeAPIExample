@@ -47,11 +47,12 @@ namespace WinApp
 
 		void GetItems()
 		{
-			var result = OnTime.Get<DataResponse<Item>>("defects", new Dictionary<string, string> {
-				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id.ToString() },
-				{ "sort_fields", "id desc" }
+			var result = OnTime.Get<DataResponse<Item>>("defects", new Dictionary<string, object> {
+				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id },
+				{ "sort_fields", "id desc" },
+				{ "page_size", 10 },
+				{ "columns", "id,name,project" }
 			});
-			var webClient = new WebClient();
 
 			Items.Clear();
 			foreach(var item in result.data)

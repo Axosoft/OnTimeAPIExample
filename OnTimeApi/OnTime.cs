@@ -38,7 +38,7 @@ namespace OnTimeApi
 		/// <returns>The access token.</returns>
 		public string ObtainAccessTokenFromAuthorizationCode(string code, string redirectUri, string scope)
 		{
-			return ObtainAccessToken(new Dictionary<string, string> {
+			return ObtainAccessToken(new Dictionary<string, object> {
 				{ "grant_type", "authorization_code" },
 				{ "code", code },
 				{ "redirect_uri", redirectUri },
@@ -55,7 +55,7 @@ namespace OnTimeApi
 		/// <returns>The access token.</returns>
 		public string ObtainAccessTokenFromUsernamePassword(string username, string password, string scope)
 		{
-			return ObtainAccessToken(new Dictionary<string, string> {
+			return ObtainAccessToken(new Dictionary<string, object> {
 				{ "grant_type", "password" },
 				{ "username", username },
 				{ "password", password },
@@ -66,10 +66,10 @@ namespace OnTimeApi
 		/// <summary>
 		/// Helper function used by ObtainAccessTokenFromAuthorizationCode and ObtainAccessTokenFromUsernamePassword
 		/// </summary>
-		private string ObtainAccessToken(IEnumerable<KeyValuePair<string, string>> parameters)
+		private string ObtainAccessToken(IEnumerable<KeyValuePair<string, object>> parameters)
 		{
 			// add client id and client secret to the parameters
-			parameters = parameters.Concat(new Dictionary<string,string> {
+			parameters = parameters.Concat(new Dictionary<string,object> {
 				{ "client_id", Settings.ClientId },
 				{ "client_secret", Settings.ClientSecret }
 			});
@@ -93,7 +93,7 @@ namespace OnTimeApi
 		/// <param name="resource">The resource (e.g. "projects" or "auth/oauth2" used in constructing the URL for the call.</param>
 		/// <param name="parameters">Any additional parameters to be used in the query.</param>
 		/// <returns></returns>
-		public ResponseT Get<ResponseT>(string resource, IEnumerable<KeyValuePair<string, string>> parameters = null)
+		public ResponseT Get<ResponseT>(string resource, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
 			var webClient = new WebClient();
 			try
@@ -140,7 +140,7 @@ namespace OnTimeApi
 		/// <param name="resource">The resource for which the URL is requested, e.g. "projects", or "auth/oauth2"</param>
 		/// <param name="parameters">Optional list of key/value parameters to be added to the query</param>
 		/// <returns>The full URL for the resource.</returns>
-		public string GetUrl(string resource, IEnumerable<KeyValuePair<string, string>> parameters = null)
+		public string GetUrl(string resource, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
 			var apiCallUrl = new UriBuilder(Settings.OnTimeUrl);
 			apiCallUrl.Path += "api/v1/" + resource;
@@ -149,7 +149,7 @@ namespace OnTimeApi
 			
 			if(parameters != null)
 				foreach(var parameter in parameters)
-					finalParameters.Add(parameter.Key, parameter.Value);
+					finalParameters.Add(parameter.Key, parameter.Value.ToString());
 
 			if(accessToken != null)
 				finalParameters.Add("oauth_token", accessToken);
