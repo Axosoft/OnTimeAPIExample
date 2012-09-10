@@ -48,7 +48,8 @@ namespace WinApp
 		void GetItems()
 		{
 			var result = OnTime.Get<DataResponse<Item>>("defects", new Dictionary<string, string> {
-				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id.ToString() }
+				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id.ToString() },
+				{ "sort_fields", "id desc" }
 			});
 			var webClient = new WebClient();
 
