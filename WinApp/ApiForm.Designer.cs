@@ -64,6 +64,7 @@
 			this.loginControl.Name = "loginControl";
 			this.loginControl.Size = new System.Drawing.Size(338, 150);
 			this.loginControl.TabIndex = 11;
+			this.loginControl.Visible = false;
 			// 
 			// updateConfigControl
 			// 
