@@ -44,23 +44,5 @@ namespace WinApp
 			ItemsControl.Visible = true;
 		}
 
-		#region Event handlers
-
-
-		void loginForm_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			//if(LoginForm.OnTime != null)
-			//{
-			//    ItemsControl.SetOnTime(LoginForm.OnTime);
-			//    ItemsControl.Visible = true;
-			//    LoginForm = null;
-			//}
-			//else
-			//    Close();
-		}
-
-		#endregion
-		
-
 	}
 }
