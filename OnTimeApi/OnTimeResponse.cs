@@ -17,7 +17,7 @@ namespace OnTimeApi
 
 	public class DataResponse<T>
 	{
-		public List<T> data;
+		public T data;
 	}
 
 	public class Item

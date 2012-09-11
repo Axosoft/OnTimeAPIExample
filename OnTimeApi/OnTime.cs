@@ -95,40 +95,42 @@ namespace OnTimeApi
 		/// <returns></returns>
 		public ResponseT Get<ResponseT>(string resource, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
-			var webClient = new WebClient();
-			try
-			{
-				var resultString = webClient.DownloadString(GetUrl(resource, parameters));
-				return Deserialize<ResponseT>(resultString);
-			} catch (WebException e)
-			{
-				MessageResponse response = null;
-				if(e.Response != null)
-					response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
-				throw new OnTimeException(response != null ? response.message : null, e);
-			}
+		    var request = WebRequest.Create(GetUrl(resource, parameters));
+			return MakeRequest<ResponseT>(request);
 		}
 
 		/// <summary>
-		/// Issues a POST request to a resource URL.
+		/// Issues a POST request to a resource URL, and returns the deserialized response.
 		/// </summary>
+		/// <typeparam name="ResponseT">The type into which to deserialize the response.</typeparam>
 		/// <param name="resource">The resource (e.g. "defects") used in constructing the URL for the call.</param>
 		/// <param name="content">The content to be posted.</param>
-		public void Post(string resource, object content)
+		public ResponseT Post<ResponseT>(string resource, object content)
 		{
-			var webClient = new WebClient();
+			var request = WebRequest.Create(GetUrl(resource));
 			var encoding = new System.Text.UTF8Encoding();
-			webClient.Encoding = encoding;
-			webClient.Headers.Add("Content-Type","application/json");
 
-			var response = webClient.UploadData(GetUrl(resource), encoding.GetBytes(JsonConvert.SerializeObject(content)));
+			request.ContentType = "application/json";
+			request.Headers.Add("Content-Encoding", encoding.HeaderName);
+			request.Method = "POST";
+
+			var bytes = encoding.GetBytes(JsonConvert.SerializeObject(content));
+			request.GetRequestStream().Write(bytes, 0, bytes.Length);
+
+			return MakeRequest<ResponseT>(request);
 		}
 
+		/// <summary>
+		/// Isses a DELETE request to a resource URL
+		/// </summary>
+		/// <param name="resource">The resource (e.g. "defects") used in constructing the URL for the call.</param>
+		/// <param name="id">The id of the resource to be deleted.</param>
 		public void Delete(string resource, int id)
 		{
-		    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetUrl(resource + "/" + id));
+		    var request = WebRequest.Create(GetUrl(resource + "/" + id));
 			request.Method = "DELETE";
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+			MakeRequest<object>(request);
 		}
 
 		#endregion
@@ -160,6 +162,23 @@ namespace OnTimeApi
 			);
 
 			return apiCallUrl.ToString();
+		}
+
+		private T MakeRequest<T>(WebRequest request)
+		{
+			try
+			{
+				var response = request.GetResponse();
+				var responseStream = response.GetResponseStream();
+
+				return DeserializeResponse<T>(responseStream);
+			} catch (WebException e)
+			{
+				MessageResponse response = null;
+				if(e.Response != null)
+					response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
+				throw new OnTimeException(response != null ? response.message : null, e);
+			}
 		}
 
 		private T DeserializeResponse<T>(Stream stream)

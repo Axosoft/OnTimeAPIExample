@@ -58,7 +58,7 @@ namespace WinApp
 						name = "API Example Project"
 					};
 
-					OnTime.Post("projects", project);
+					OnTime.Post<DataResponse<Project>>("projects", project);
 				}
 				else
 				{
@@ -71,7 +71,7 @@ namespace WinApp
 
 		void GetItems()
 		{
-			var result = OnTime.Get<DataResponse<Item>>("defects", new Dictionary<string, object> {
+			var result = OnTime.Get<DataResponse<List<Item>>>("defects", new Dictionary<string, object> {
 				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id },
 				{ "sort_fields", "id desc" },
 				{ "page_size", 10 },
@@ -85,7 +85,7 @@ namespace WinApp
 
 		void GetProjects()
 		{
-			var result = OnTime.Get<DataResponse<Project>>("projects");
+			var result = OnTime.Get<DataResponse<List<Project>>>("projects");
 			
 			Projects.Clear();
 			foreach(var project in result.data)
@@ -120,7 +120,7 @@ namespace WinApp
 					}
 				};
 
-				OnTime.Post("defects", new { item = item });
+				OnTime.Post<DataResponse<Item>>("defects", new { item = item });
 
 				GetItems();
 			}
