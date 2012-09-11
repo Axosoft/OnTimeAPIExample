@@ -120,11 +120,11 @@
   <metadata name="label1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
-  <metadata name="id.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
+  <metadata name="toolStrip2.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
   </metadata>
-  <metadata name="project.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
+  <metadata name="toolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>122, 17</value>
   </metadata>
   <metadata name="id.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -155,10 +155,16 @@
         NPMVAPiLwAGjyQsjAAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="toolStrip2.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <metadata name="toolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>122, 17</value>
-  </metadata>
+  <data name="AddAttachmentButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFnSURBVDhP7ZNNS8NQEEWL2nzRpLFpkzSJraWJ2SiIC/ci
+        BYWurAWhVQtK0YooKroSP/6CKwsK9pd6HlRw4+LFpQYe4Q2ZM3fuTHK5P//MmKaZ+r5/WiqVWrgx+ytH
+        FEVZqlart5ZltYIgOAvDcB+gkhlq2/ZhPp9fFgDARqVSuavVasPMUNpt024HwFwURToFRmmafqD0gJgm
+        rRR1q41GY+y67qaAciwKXAkoFgy4G1JQPExo9TmO4zHvr6HoFLgEOiF2BFCXgmqatkDiU7PZfEPd1lSp
+        gF4kSTIh1idmSkH5OAL6CPQdwPYUqpTL5WG9Xn9hWF1i87LQEN8eBJRJtz3Pc/F4rVgsdijS5T5giIks
+        FGZwz6BeUdwDtmMYhg9ERe0xm3AjC8zpuh6KZcfDk+8D4U9adxznWhooEoBGAIe0uSHUodRG4R57ep4J
+        KJJUVV3EuxGqepx+oVDYxdOVzMD/xB8d+ARspDBoTVWGVgAAAABJRU5ErkJggg==
+</value>
+  </data>
 </root>

@@ -29,8 +29,9 @@
 		private void InitializeComponent()
 		{
 			System.Windows.Forms.Label label1;
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsControl));
 			System.Windows.Forms.ToolStrip toolStrip2;
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsControl));
+			this.ProjectComboBox = new System.Windows.Forms.ToolStripComboBox();
 			this.ItemsGridView = new System.Windows.Forms.DataGridView();
 			this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,13 +39,13 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.AddButton = new System.Windows.Forms.ToolStripButton();
 			this.DeleteButton = new System.Windows.Forms.ToolStripButton();
+			this.AddAttachmentButton = new System.Windows.Forms.ToolStripButton();
 			this.OnTimeHostLabel = new System.Windows.Forms.Label();
-			this.ProjectComboBox = new System.Windows.Forms.ToolStripComboBox();
 			label1 = new System.Windows.Forms.Label();
 			toolStrip2 = new System.Windows.Forms.ToolStrip();
+			toolStrip2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).BeginInit();
 			this.toolStrip1.SuspendLayout();
-			toolStrip2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -55,6 +56,25 @@
 			label1.Size = new System.Drawing.Size(113, 13);
 			label1.TabIndex = 8;
 			label1.Text = "Displaying Defects for:";
+			// 
+			// toolStrip2
+			// 
+			toolStrip2.Anchor = System.Windows.Forms.AnchorStyles.None;
+			toolStrip2.AutoSize = false;
+			toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
+			toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ProjectComboBox});
+			toolStrip2.Location = new System.Drawing.Point(295, 41);
+			toolStrip2.Name = "toolStrip2";
+			toolStrip2.Size = new System.Drawing.Size(470, 25);
+			toolStrip2.TabIndex = 18;
+			toolStrip2.Text = "toolStrip2";
+			// 
+			// ProjectComboBox
+			// 
+			this.ProjectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ProjectComboBox.Name = "ProjectComboBox";
+			this.ProjectComboBox.Size = new System.Drawing.Size(121, 25);
 			// 
 			// ItemsGridView
 			// 
@@ -102,10 +122,11 @@
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddButton,
-            this.DeleteButton});
+            this.DeleteButton,
+            this.AddAttachmentButton});
 			this.toolStrip1.Location = new System.Drawing.Point(21, 41);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(128, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(274, 25);
 			this.toolStrip1.TabIndex = 16;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -121,12 +142,23 @@
 			// 
 			// DeleteButton
 			// 
+			this.DeleteButton.Enabled = false;
 			this.DeleteButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteButton.Image")));
 			this.DeleteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.DeleteButton.Name = "DeleteButton";
 			this.DeleteButton.Size = new System.Drawing.Size(60, 22);
 			this.DeleteButton.Text = "Delete";
 			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+			// 
+			// AddAttachmentButton
+			// 
+			this.AddAttachmentButton.Enabled = false;
+			this.AddAttachmentButton.Image = ((System.Drawing.Image)(resources.GetObject("AddAttachmentButton.Image")));
+			this.AddAttachmentButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.AddAttachmentButton.Name = "AddAttachmentButton";
+			this.AddAttachmentButton.Size = new System.Drawing.Size(115, 22);
+			this.AddAttachmentButton.Text = "Add Attachment";
+			this.AddAttachmentButton.Click += new System.EventHandler(this.AddAttachment_Click);
 			// 
 			// OnTimeHostLabel
 			// 
@@ -136,25 +168,6 @@
 			this.OnTimeHostLabel.Name = "OnTimeHostLabel";
 			this.OnTimeHostLabel.Size = new System.Drawing.Size(0, 13);
 			this.OnTimeHostLabel.TabIndex = 17;
-			// 
-			// toolStrip2
-			// 
-			toolStrip2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			toolStrip2.AutoSize = false;
-			toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
-			toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ProjectComboBox});
-			toolStrip2.Location = new System.Drawing.Point(149, 41);
-			toolStrip2.Name = "toolStrip2";
-			toolStrip2.Size = new System.Drawing.Size(616, 25);
-			toolStrip2.TabIndex = 18;
-			toolStrip2.Text = "toolStrip2";
-			// 
-			// ProjectComboBox
-			// 
-			this.ProjectComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.ProjectComboBox.Name = "ProjectComboBox";
-			this.ProjectComboBox.Size = new System.Drawing.Size(121, 25);
 			// 
 			// ItemsControl
 			// 
@@ -167,11 +180,11 @@
 			this.Controls.Add(label1);
 			this.Name = "ItemsControl";
 			this.Size = new System.Drawing.Size(787, 334);
+			toolStrip2.ResumeLayout(false);
+			toolStrip2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.ItemsGridView)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			toolStrip2.ResumeLayout(false);
-			toolStrip2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -183,10 +196,11 @@
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton AddButton;
 		private System.Windows.Forms.ToolStripButton DeleteButton;
+		private System.Windows.Forms.Label OnTimeHostLabel;
+		private System.Windows.Forms.ToolStripComboBox ProjectComboBox;
 		private System.Windows.Forms.DataGridViewTextBoxColumn id;
 		private System.Windows.Forms.DataGridViewTextBoxColumn name;
 		private System.Windows.Forms.DataGridViewTextBoxColumn project;
-		private System.Windows.Forms.Label OnTimeHostLabel;
-		private System.Windows.Forms.ToolStripComboBox ProjectComboBox;
+		private System.Windows.Forms.ToolStripButton AddAttachmentButton;
 	}
 }

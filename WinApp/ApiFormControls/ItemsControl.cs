@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using OnTimeApi;
 using System.Net;
+using System.IO;
 
 namespace WinApp
 {
@@ -32,6 +33,7 @@ namespace WinApp
 			ItemsGridView.AutoGenerateColumns = false;
 			ItemsGridView.DataSource = Items;
 			ItemsGridView.CellEndEdit += new DataGridViewCellEventHandler(ItemsGridView_CellEndEdit);
+			ItemsGridView.SelectionChanged += new EventHandler(ItemsGridView_SelectionChanged);
 		}
 
 		public void SetOnTime(OnTime onTime)
@@ -59,6 +61,7 @@ namespace WinApp
 					};
 
 					OnTime.Post<DataResponse<Project>>("projects", project);
+					GetProjects();
 				}
 				else
 				{
@@ -90,6 +93,15 @@ namespace WinApp
 			Projects.Clear();
 			foreach(var project in result.data)
 				Projects.Add(project);
+		}
+
+		// called on grid selection change, enables / disables buttons as appropriate
+		void ItemsGridView_SelectionChanged(object sender, EventArgs e)
+		{
+			var count = ItemsGridView.SelectedRows.Count;
+			var newItemInSelection = ItemsGridView.SelectedRows.Cast<DataGridViewRow>().Any(row => (int)row.Cells["id"].Value == 0);
+			DeleteButton.Enabled = !newItemInSelection && (count > 0); // enable delete if any items are selected (and none of them is the new item)
+			AddAttachmentButton.Enabled = !newItemInSelection && count == 1; // only enable add attachment if one item is selected (and it's not the new item)
 		}
 
 		private void AddButton_Click(object sender, EventArgs e)
@@ -128,13 +140,44 @@ namespace WinApp
 
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
-			if(ItemsGridView.SelectedRows.Count > 0)
+			var count = ItemsGridView.SelectedRows.Count;
+			if(count > 0)
 			{
-				foreach(DataGridViewRow row in ItemsGridView.SelectedRows)
+				var dialogResult = MessageBox.Show(
+					string.Format("This action is not reversible. Are you sure you want to delete {0} defect{1}?", count, count > 1 ? "s" : ""),
+					"Delete confirmation",
+					MessageBoxButtons.YesNo, 
+					MessageBoxIcon.Warning);
+
+				if(dialogResult == DialogResult.Yes)
 				{
-					OnTime.Delete("defects", (int)row.Cells["id"].Value);
+					foreach(DataGridViewRow row in ItemsGridView.SelectedRows)
+						OnTime.Delete("defects", (int)row.Cells["id"].Value);
+					GetItems();
 				}
-				GetItems();
+			}
+		}
+
+		private void AddAttachment_Click(object sender, EventArgs e)
+		{
+			// have user select a file to attach
+			var openFileDialog = new OpenFileDialog();
+
+			if(openFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				Stream stream;
+				if ((stream = openFileDialog.OpenFile()) != null)
+				{
+					using (stream)
+					{
+						// get id of selected item
+						var id = (int)ItemsGridView.CurrentRow.Cells["id"].Value;
+						OnTime.Post<MessageResponse>(string.Format("defects/{0}/attachments", id), stream, new Dictionary<string, object> {
+							{ "file_name",  Path.GetFileName(openFileDialog.FileName)},
+						});
+
+					}
+				}
 			}
 		}
 
@@ -142,7 +185,5 @@ namespace WinApp
 		{
 			GetItems();
 		}
-
-
 	}
 }

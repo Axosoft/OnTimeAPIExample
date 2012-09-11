@@ -105,17 +105,27 @@ namespace OnTimeApi
 		/// <typeparam name="ResponseT">The type into which to deserialize the response.</typeparam>
 		/// <param name="resource">The resource (e.g. "defects") used in constructing the URL for the call.</param>
 		/// <param name="content">The content to be posted.</param>
-		public ResponseT Post<ResponseT>(string resource, object content)
+		public ResponseT Post<ResponseT>(string resource, object content, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
-			var request = WebRequest.Create(GetUrl(resource));
-			var encoding = new System.Text.UTF8Encoding();
-
-			request.ContentType = "application/json";
-			request.Headers.Add("Content-Encoding", encoding.HeaderName);
+			var request = WebRequest.Create(GetUrl(resource, parameters));
 			request.Method = "POST";
 
-			var bytes = encoding.GetBytes(JsonConvert.SerializeObject(content));
-			request.GetRequestStream().Write(bytes, 0, bytes.Length);
+			var requestStream = request.GetRequestStream();
+			if(content is Stream)
+			{
+				request.ContentType = "application/octet-stream";
+				((Stream)content).CopyTo(requestStream);
+			}
+			else
+			{
+				var encoding = new System.Text.UTF8Encoding();
+
+				request.ContentType = "application/json";
+				request.Headers.Add("Content-Encoding", encoding.HeaderName);
+
+				var bytes = encoding.GetBytes(JsonConvert.SerializeObject(content));
+				requestStream.Write(bytes, 0, bytes.Length);
+			}			
 
 			return MakeRequest<ResponseT>(request);
 		}
