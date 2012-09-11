@@ -42,6 +42,30 @@ namespace WinApp
 			OnTimeHostLabel.Text = new Uri(OnTime.Settings.OnTimeUrl).Host;
 
 			GetProjects();
+			if(Projects.Count == 0)
+			{
+				// there are no projects. ask the user if they want to create a new project.
+				var dialogResult = MessageBox.Show(
+					"Your OnTime database has no projects. To use this example, you will need to create a project. Would you like to create a new project called \"API Example Project\" now?",
+					"Create an OnTime project",
+					MessageBoxButtons.YesNo, 
+					MessageBoxIcon.Question);
+
+				if(dialogResult == DialogResult.Yes)
+				{
+					var project = new Project
+					{
+						name = "API Example Project"
+					};
+
+					OnTime.Post("projects", project);
+				}
+				else
+				{
+					Application.Exit();
+					return;
+				}
+			}
 			GetItems();
 		}
 
