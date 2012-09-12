@@ -106,6 +106,7 @@ namespace WinApp
 
 		private void AddButton_Click(object sender, EventArgs e)
 		{
+			AddButton.Enabled = false;
 			Items.Insert(0, new Item());
 			DataGridViewCell newNameCell = ItemsGridView.Rows[0].Cells["name"];
 			ItemsGridView.CurrentCell = newNameCell;
@@ -136,6 +137,7 @@ namespace WinApp
 
 				GetItems();
 			}
+			AddButton.Enabled = true;
 		}
 
 		private void DeleteButton_Click(object sender, EventArgs e)
