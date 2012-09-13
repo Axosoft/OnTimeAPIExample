@@ -42,8 +42,6 @@ namespace WinApp
 					password: PasswordText.Text,
 					scope: "read write"
 				);
-
-				LoggedIn(this, new LoginEventArgs(OnTime));
 			} catch (OnTimeException ex)
 			{
 				MessageBox.Show(
@@ -52,6 +50,9 @@ namespace WinApp
 					MessageBoxButtons.OK, 
 					MessageBoxIcon.Error);
 			}
+
+			if(OnTime.HasAccessToken())
+				LoggedIn(this, new LoginEventArgs(OnTime));
 		}
 	}
 }
