@@ -33,20 +33,28 @@ namespace APIExample.Controllers
 			return Redirect(authUrl.ToString());
         }
 
-		public ActionResult AuthorizationCodeCallback(string code)
+		public ActionResult AuthorizationCodeCallback(string code, string error)
 		{
-			try
+			if(!string.IsNullOrEmpty(code))
 			{
-				Session["AccessToken"] = OnTime.ObtainAccessTokenFromAuthorizationCode(
-					code: code,
-					redirectUri: GetRedirectUri(),
-					scope: "read write"
-				);
-				return RedirectToAction("Index", "Home");
+				try
+				{
+					Session["AccessToken"] = OnTime.ObtainAccessTokenFromAuthorizationCode(
+						code: code,
+						redirectUri: GetRedirectUri(),
+						scope: "read write"
+					);
+					return RedirectToAction("Index", "Home");
+				}
+				catch(OnTimeException e)
+				{
+					Response.Write("An error occurred when obtaining access token from OnTime: " + e.Message);
+					return null;
+				}
 			}
-			catch(OnTimeException e)
+			else
 			{
-				Response.Write("An error occurred when obtaining access token from OnTime: " + e.Message);
+				Response.Write(error);
 				return null;
 			}
 		}
