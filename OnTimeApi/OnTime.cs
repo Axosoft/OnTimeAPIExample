@@ -27,6 +27,11 @@ namespace OnTimeApi
 			this.accessToken = accessToken;
 		}
 
+		public bool HasAccessToken()
+		{
+			return accessToken != null;
+		}
+
 		#region Obtaining an Access Token
 
 		/// <summary>
@@ -186,7 +191,12 @@ namespace OnTimeApi
 			{
 				MessageResponse response = null;
 				if(e.Response != null)
-					response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
+					try
+					{
+						response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
+					}
+					catch(Exception)
+					{}
 				throw new OnTimeException(response != null ? response.message : null, e);
 			}
 		}

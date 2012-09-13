@@ -34,6 +34,14 @@ namespace WinApp
 			ItemsGridView.DataSource = Items;
 			ItemsGridView.CellEndEdit += new DataGridViewCellEventHandler(ItemsGridView_CellEndEdit);
 			ItemsGridView.SelectionChanged += new EventHandler(ItemsGridView_SelectionChanged);
+
+			System.Windows.Forms.Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+		}
+
+		void Application_ApplicationExit(object sender, EventArgs e)
+		{
+			if(OnTime != null && OnTime.HasAccessToken())
+				OnTime.Get<MessageResponse>("auth/revoke");			
 		}
 
 		public void SetOnTime(OnTime onTime)
