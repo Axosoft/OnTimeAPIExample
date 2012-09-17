@@ -1,0 +1,11 @@
+header {
+	background-color: #333;
+	color: #CCC;
+	font-size: 24pt;
+	line-height: 40pt;
+	padding: 10px;
+}
+
+.error {
+	color: #cc0c00
+}

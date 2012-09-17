@@ -8,6 +8,20 @@
 </head>
 
 <body>
+	<header>OnTime API Explorer
+		<div class="pull-right">
+			<div class="btn">
+			@if(User.Identity.IsAuthenticated)
+			{
+				@Html.ActionLink("Log Out " + ((APIExample.FormsAuth.OnTimeIdentity)User.Identity).login_id, "LogOut", "Home")
+			}
+			else
+			{
+				@Html.ActionLink("Log In", "ObtainVerificationCode", "OAuth")
+			}
+			</div>
+		</div>
+	</header>
     @RenderBody()
 </body>
 </html>

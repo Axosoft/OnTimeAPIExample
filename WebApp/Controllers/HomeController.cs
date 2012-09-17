@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace APIExample.Controllers
 {
@@ -12,18 +13,25 @@ namespace APIExample.Controllers
         public ActionResult Index()
         {
 			// check to see whether we already have an access token
-			var accessToken = (string)Session["AccessToken"];
-
-			if(!string.IsNullOrEmpty(accessToken))
+			if(User.Identity.IsAuthenticated)
 				// we do have an access token - redirect to the Api controller
 				return RedirectToAction("Index", "Api");
+
+			// check to see whether Web.config has been updated
+			var settings = MvcApplication.Settings;
+			if(settings.OnTimeUrl == "https://someaccount.ontimenow.com/" ||
+				settings.ClientId == "00000000-0000-0000-0000-000000000000" ||
+				settings.ClientSecret == "00000000-0000-0000-0000-000000000000")
+			{
+				return View("UpdateConfig");
+			}
 
 			return View();
         }
 
 		public ActionResult LogOut()
 		{
-			Session.Remove("AccessToken");
+			FormsAuthentication.SignOut();
 
 			return RedirectToAction("Index");
 		}

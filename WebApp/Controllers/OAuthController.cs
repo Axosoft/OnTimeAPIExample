@@ -7,6 +7,7 @@ using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
 using OnTimeApi;
+using System.Web.Security;
 
 namespace APIExample.Controllers
 {
@@ -39,24 +40,33 @@ namespace APIExample.Controllers
 			{
 				try
 				{
-					Session["AccessToken"] = OnTime.ObtainAccessTokenFromAuthorizationCode(
+					var accessToken = OnTime.ObtainAccessTokenFromAuthorizationCode(
 						code: code,
 						redirectUri: GetRedirectUri(),
 						scope: "read write"
 					);
-					return RedirectToAction("Index", "Home");
+					// get information about the logged in user
+					var user = MvcApplication.CacheCurrentUser(accessToken);
+
+					var ticket = new FormsAuthenticationTicket(1, user.login_id, DateTime.Now, DateTime.Now + FormsAuthentication.Timeout, false, accessToken);
+
+					var encryptedTicket = FormsAuthentication.Encrypt(ticket);
+
+					HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+					Response.Cookies.Add(authCookie);
+
+					Response.Redirect(FormsAuthentication.GetRedirectUrl(user.login_id, false));
 				}
 				catch(OnTimeException e)
 				{
 					Response.Write("An error occurred when obtaining access token from OnTime: " + e.Message);
-					return null;
 				}
 			}
 			else
 			{
-				Response.Write(error);
-				return null;
+				Response.Write("Obtaining an access token from OnTime failed with an error: " + error);
 			}
+			return null;
 		}
 
 		#endregion

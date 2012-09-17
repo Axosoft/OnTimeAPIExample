@@ -5,24 +5,22 @@ using System.Web;
 using System.Web.Mvc;
 using OnTimeApi;
 using System.Net;
+using APIExample.FormsAuth;
 
 namespace APIExample.Controllers
 {
+	[Authorize]
     public class ApiController : Controller
     {
-        //
-        // GET: /Api/
-
         public ActionResult Index()
         {
-			var OnTime = new OnTime(MvcApplication.Settings, (string)Session["AccessToken"]);
-            return View(OnTime);
+			return View(GetOnTime());
         }
 
 		public ActionResult GetProjects()
 		{
 			// make an API call to OnTime
-			var OnTime = new OnTime(MvcApplication.Settings, (string)Session["AccessToken"]);
+			var OnTime = GetOnTime();
 
 			var webClient = new WebClient();
 
@@ -35,5 +33,9 @@ namespace APIExample.Controllers
 			return null;
 		}
 
+		private OnTime GetOnTime()
+		{
+			return new OnTime(MvcApplication.Settings, ((OnTimeIdentity)User.Identity).AccessToken);
+		}
     }
 }
