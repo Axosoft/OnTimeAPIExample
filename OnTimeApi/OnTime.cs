@@ -80,7 +80,7 @@ namespace OnTimeApi
 			});
 			
 			// get the response from the token endpoint
-			var authResponse = Get<AuthResponse>("auth/oauth2", parameters);
+			var authResponse = Get<AuthResponse>("oauth2/token", parameters);
 			
 			// store and return access token
 			accessToken = authResponse.access_token;
@@ -95,7 +95,7 @@ namespace OnTimeApi
 		/// Issues a GET request to a resource URL, and returns the deserialized response.
 		/// </summary>
 		/// <typeparam name="ResponseT">The type into which to deserialize the response.</typeparam>
-		/// <param name="resource">The resource (e.g. "projects" or "auth/oauth2" used in constructing the URL for the call.</param>
+		/// <param name="resource">The resource (e.g. "v1/projects" or "oauth2/token" used in constructing the URL for the call.</param>
 		/// <param name="parameters">Any additional parameters to be used in the query.</param>
 		/// <returns></returns>
 		public ResponseT Get<ResponseT>(string resource, IEnumerable<KeyValuePair<string, object>> parameters = null)
@@ -108,7 +108,7 @@ namespace OnTimeApi
 		/// Issues a POST request to a resource URL, and returns the deserialized response.
 		/// </summary>
 		/// <typeparam name="ResponseT">The type into which to deserialize the response.</typeparam>
-		/// <param name="resource">The resource (e.g. "defects") used in constructing the URL for the call.</param>
+		/// <param name="resource">The resource (e.g. "v1/defects") used in constructing the URL for the call.</param>
 		/// <param name="content">The content to be posted.</param>
 		public ResponseT Post<ResponseT>(string resource, object content, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
@@ -154,13 +154,13 @@ namespace OnTimeApi
 		/// Gets the URL for an API resource, using the base OnTime URL from settings, the current API version,
 		/// the obtained access token (if available), and specified parameters
 		/// </summary>
-		/// <param name="resource">The resource for which the URL is requested, e.g. "projects", or "auth/oauth2"</param>
+		/// <param name="resource">The resource for which the URL is requested, e.g. "v1/projects", or "oauth2/token"</param>
 		/// <param name="parameters">Optional list of key/value parameters to be added to the query</param>
 		/// <returns>The full URL for the resource.</returns>
 		public string GetUrl(string resource, IEnumerable<KeyValuePair<string, object>> parameters = null)
 		{
 			var apiCallUrl = new UriBuilder(Settings.OnTimeUrl);
-			apiCallUrl.Path += "api/v1/" + resource;
+			apiCallUrl.Path += "api/" + resource;
 			
 			var finalParameters = new Dictionary<string, string>();
 			
@@ -189,15 +189,15 @@ namespace OnTimeApi
 				return DeserializeResponse<T>(responseStream);
 			} catch (WebException e)
 			{
-				MessageResponse response = null;
+				ErrorResponse response = null;
 				if(e.Response != null)
 					try
 					{
-						response = DeserializeResponse<MessageResponse>(e.Response.GetResponseStream());
+						response = DeserializeResponse<ErrorResponse>(e.Response.GetResponseStream());
 					}
 					catch(Exception)
 					{}
-				throw new OnTimeException(response != null ? response.message : null, e);
+				throw new OnTimeException(response, e);
 			}
 		}
 

@@ -41,7 +41,7 @@ namespace WinApp
 		void Application_ApplicationExit(object sender, EventArgs e)
 		{
 			if(OnTime != null && OnTime.HasAccessToken())
-				OnTime.Get<MessageResponse>("auth/revoke");			
+				OnTime.Get<MessageResponse>("oauth2/revoke");			
 		}
 
 		public void SetOnTime(OnTime onTime)
@@ -68,7 +68,7 @@ namespace WinApp
 						name = "API Example Project"
 					};
 
-					OnTime.Post<DataResponse<Project>>("projects", project);
+					OnTime.Post<DataResponse<Project>>("v1/projects", project);
 					GetProjects();
 				}
 				else
@@ -82,7 +82,7 @@ namespace WinApp
 
 		void GetItems()
 		{
-			var result = OnTime.Get<DataResponse<List<Item>>>("defects", new Dictionary<string, object> {
+			var result = OnTime.Get<DataResponse<List<Item>>>("v1/defects", new Dictionary<string, object> {
 				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id },
 				{ "sort_fields", "id desc" },
 				{ "page_size", 10 },
@@ -96,7 +96,7 @@ namespace WinApp
 
 		void GetProjects()
 		{
-			var result = OnTime.Get<DataResponse<List<Project>>>("projects");
+			var result = OnTime.Get<DataResponse<List<Project>>>("v1/projects");
 			
 			Projects.Clear();
 			foreach(var project in result.data)
@@ -141,7 +141,7 @@ namespace WinApp
 					}
 				};
 
-				OnTime.Post<DataResponse<Item>>("defects", new { item = item });
+				OnTime.Post<DataResponse<Item>>("v1/defects", new { item = item });
 
 				GetItems();
 			}
@@ -162,7 +162,7 @@ namespace WinApp
 				if(dialogResult == DialogResult.Yes)
 				{
 					foreach(DataGridViewRow row in ItemsGridView.SelectedRows)
-						OnTime.Delete("defects", (int)row.Cells["id"].Value);
+						OnTime.Delete("v1/defects", (int)row.Cells["id"].Value);
 					GetItems();
 				}
 			}
@@ -182,7 +182,7 @@ namespace WinApp
 					{
 						// get id of selected item
 						var id = (int)ItemsGridView.CurrentRow.Cells["id"].Value;
-						OnTime.Post<MessageResponse>(string.Format("defects/{0}/attachments", id), stream, new Dictionary<string, object> {
+						OnTime.Post<MessageResponse>(string.Format("v1/defects/{0}/attachments", id), stream, new Dictionary<string, object> {
 							{ "file_name",  Path.GetFileName(openFileDialog.FileName)},
 						});
 

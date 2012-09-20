@@ -5,6 +5,14 @@ using System.Web;
 
 namespace OnTimeApi
 {
+
+	public class ErrorResponse
+	{
+		public string error;
+		public string error_description;
+		public string message;
+	}
+
 	public class MessageResponse
 	{
 		public string message;

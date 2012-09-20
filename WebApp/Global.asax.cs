@@ -68,7 +68,7 @@ namespace APIExample
 		static public OnTimeIdentity CacheCurrentUser(string accessToken)
 		{
 			var OnTime = new OnTime(Settings, accessToken);
-			var loggedInUser = OnTime.Get<DataResponse<OnTimeApi.User>>("users/me").data;
+			var loggedInUser = OnTime.Get<DataResponse<OnTimeApi.User>>("v1/users/me").data;
 			var identity = new OnTimeIdentity(loggedInUser, accessToken);
 			HttpRuntime.Cache["OnTimeUser-" + loggedInUser.login_id] = identity;
 
