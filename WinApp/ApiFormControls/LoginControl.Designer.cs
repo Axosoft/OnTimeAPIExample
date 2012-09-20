@@ -41,9 +41,9 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(6, 11);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(317, 13);
+			this.label3.Size = new System.Drawing.Size(322, 13);
 			this.label3.TabIndex = 11;
-			this.label3.Text = "Please log in with your OnTime credential to retrieve your Defects.";
+			this.label3.Text = "Please log in with your OnTime credentials to retrieve your Defects.";
 			// 
 			// label2
 			// 
