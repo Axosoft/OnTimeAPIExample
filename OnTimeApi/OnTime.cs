@@ -169,7 +169,7 @@ namespace OnTimeApi
 					finalParameters.Add(parameter.Key, parameter.Value.ToString());
 
 			if(accessToken != null)
-				finalParameters.Add("oauth_token", accessToken);
+				finalParameters.Add("access_token", accessToken);
 
 			apiCallUrl.Query = string.Join(
 				"&",
