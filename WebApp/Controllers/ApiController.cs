@@ -17,14 +17,14 @@ namespace APIExample.Controllers
 			return View(GetOnTime());
         }
 
-		public ActionResult GetProjects()
+		public ActionResult Get(string resource)
 		{
 			// make an API call to OnTime
 			var OnTime = GetOnTime();
 
 			var webClient = new WebClient();
 
-			var resultString = webClient.DownloadString(OnTime.GetUrl("projects"));
+			var resultString = webClient.DownloadString(OnTime.GetUrl(resource));
 			Response.Write(resultString);
 			Response.ContentType = "application/json";
 			Response.ContentEncoding = System.Text.Encoding.UTF8;

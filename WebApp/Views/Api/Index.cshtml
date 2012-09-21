@@ -6,7 +6,11 @@
 <div class="container">
 	<h2>Example GET API calls</h2>
 	<select id="api-get-url">
-		<option value="@Url.Action("GetProjects")">projects</option>
+		<option value="@(Url.Action("Get"))?resource=v1/projects">api/v1/projects</option>
+		<option value="@(Url.Action("Get"))?resource=v1/defects">api/v1/defects</option>
+		<option value="@(Url.Action("Get"))?resource=v1/features">api/v1/features</option>
+		<option value="@(Url.Action("Get"))?resource=v1/incidents">api/v1/incidents</option>
+		<option value="@(Url.Action("Get"))?resource=v1/tasks">api/v1/tasks</option>
 	</select>
 
 	<a href="#" class="btn" id="api-get">GET</a>
