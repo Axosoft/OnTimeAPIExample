@@ -26,14 +26,15 @@ namespace WinApp
 
 			// Set up exception handling
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-//			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
 			// set up and start form
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new ApiForm()); // not passing the form to Run so closing it doesn't exit the app
+			Application.Run(new ApiForm());
 		}
+
+		#region Exception Handling
 
 		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
@@ -55,5 +56,7 @@ namespace WinApp
 				MessageBoxButtons.OK, 
 				MessageBoxIcon.Error);
 		}
+
+		#endregion
 	}
 }
