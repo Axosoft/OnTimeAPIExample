@@ -18,10 +18,11 @@
 		<option value="@(Url.Action("Get"))?resource=v1/tasks/{id}">api/v1/tasks/{id}</option>
 	</select>
 
-	<input type="text" id="api-get-id" value="1" />
+	<span id="api-get-id-label">id:</span><input type="text" id="api-get-id" value="1" />
 
-	<a href="#" class="btn" id="api-get">GET</a>
-
+	<div>
+		<a href="#" class="btn" id="api-get">GET</a>
+	</div>
 
 	<div>
 		<textarea id="api-get-results" disabled="disabled"></textarea>
@@ -43,6 +44,7 @@ function toggleIdInputNode() {
 	// we show the id input node if the url contains {id}
 	var showIdInputNode = urlInputNode.val().indexOf('{id}') != -1;
 	idInputNode.toggle(showIdInputNode);
+	$('#api-get-id-label').toggle(showIdInputNode);
 }
 
 toggleIdInputNode();
