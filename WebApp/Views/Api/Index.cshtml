@@ -7,13 +7,22 @@
 	<h2>Example GET API calls</h2>
 	<select id="api-get-url">
 		<option value="@(Url.Action("Get"))?resource=v1/projects">api/v1/projects</option>
+		<option value="@(Url.Action("Get"))?resource=v1/projects/{id}">api/v1/projects/{id}</option>
 		<option value="@(Url.Action("Get"))?resource=v1/defects">api/v1/defects</option>
+		<option value="@(Url.Action("Get"))?resource=v1/defects/{id}">api/v1/defects/{id}</option>
 		<option value="@(Url.Action("Get"))?resource=v1/features">api/v1/features</option>
+		<option value="@(Url.Action("Get"))?resource=v1/features/{id}">api/v1/features/{id}</option>
 		<option value="@(Url.Action("Get"))?resource=v1/incidents">api/v1/incidents</option>
+		<option value="@(Url.Action("Get"))?resource=v1/incidents/{id}">api/v1/incidents/{id}</option>
 		<option value="@(Url.Action("Get"))?resource=v1/tasks">api/v1/tasks</option>
+		<option value="@(Url.Action("Get"))?resource=v1/tasks/{id}">api/v1/tasks/{id}</option>
 	</select>
 
+	<input type="text" id="api-get-id" value="1" />
+
 	<a href="#" class="btn" id="api-get">GET</a>
+
+
 	<div>
 		<textarea id="api-get-results" disabled="disabled"></textarea>
 	</div>
@@ -26,10 +35,28 @@
 </div>
 
 <script type="text/javascript">
+// hide the id input unless it is needed for the selected API call
+var idInputNode = $('#api-get-id'),
+	urlInputNode = $('#api-get-url');
+
+function toggleIdInputNode() {
+	// we show the id input node if the url contains {id}
+	var showIdInputNode = urlInputNode.val().indexOf('{id}') != -1;
+	idInputNode.toggle(showIdInputNode);
+}
+
+toggleIdInputNode();
+
+urlInputNode.change(toggleIdInputNode);
+
 $('#api-get').click(function(event) {
 	event.preventDefault();
 
-	var url = $('#api-get-url').val();
+	// compose the url, substituting the id if needed
+	var url = urlInputNode.val();
+	url = url.replace('{id}', idInputNode.val());
+
+	// make the call to the Get action, which will forward the call to the OnTime API
 	$.ajax(url, {
 		dataType: "text",
 		success: function(result) {
