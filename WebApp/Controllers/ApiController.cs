@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using OnTimeApi;
 using System.Net;
 using APIExample.FormsAuth;
+using System.IO;
+using System.Text;
 
 namespace APIExample.Controllers
 {
@@ -22,14 +24,30 @@ namespace APIExample.Controllers
 			// make an API call to OnTime
 			var OnTime = GetOnTime();
 
-			var webClient = new WebClient();
+			var request = WebRequest.Create(OnTime.GetUrl(resource));
 
-			var resultString = webClient.DownloadString(OnTime.GetUrl(resource));
-			Response.Write(resultString);
-			Response.ContentType = "application/json";
-			Response.ContentEncoding = System.Text.Encoding.UTF8;
-			Response.Charset = "UTF-8";
+			Stream resultStream;
+			HttpWebResponse response;
+			try
+			{
+				response = (HttpWebResponse)request.GetResponse();
+			} catch (WebException e)
+			{
+				response = (HttpWebResponse)e.Response;
+			}
 
+			resultStream = response.GetResponseStream();
+			
+			Response.ContentType = response.ContentType;
+			try
+			{
+				Response.ContentEncoding = Encoding.GetEncoding(response.ContentEncoding);
+			} catch(Exception) {}
+
+			Response.Charset = response.CharacterSet;
+			
+			resultStream.CopyTo(Response.OutputStream);
+			
 			return null;
 		}
 
