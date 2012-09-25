@@ -19,13 +19,22 @@ namespace APIExample.Controllers
 			return View(GetOnTime());
         }
 
-		public ActionResult Get(string resource)
+		public ActionResult Proxy(string resource)
 		{
 			// make an API call to OnTime
 			var OnTime = GetOnTime();
 
-			var request = WebRequest.Create(OnTime.GetUrl(resource));
-
+			// create the HTTP request
+			var request = WebRequest.Create(OnTime.GetUrl(resource)); //using the URL of the specified resource
+			request.Method = Request.HttpMethod; // use the same method that was used to make the proxy call
+			if(string.Compare(Request.HttpMethod, "POST", ignoreCase: true) == 0)
+			{
+				request.ContentType = Request.ContentType; // and the same content type
+				Request.InputStream.Seek(0, SeekOrigin.Begin);
+				Request.InputStream.CopyTo(request.GetRequestStream()); // and the same payload
+			}
+			
+			// make the request and grab the response
 			Stream resultStream;
 			HttpWebResponse response;
 			try
@@ -36,6 +45,7 @@ namespace APIExample.Controllers
 				response = (HttpWebResponse)e.Response;
 			}
 
+			// proxy the results back to our caller
 			resultStream = response.GetResponseStream();
 			
 			Response.ContentType = response.ContentType;

@@ -4,29 +4,39 @@
 }
 
 <div class="container">
-	<h2>Example GET API calls</h2>
-	<select id="api-get-url">
-		<option value="@(Url.Action("Get"))?resource=v1/projects">api/v1/projects</option>
-		<option value="@(Url.Action("Get"))?resource=v1/projects/{id}">api/v1/projects/{id}</option>
-		<option value="@(Url.Action("Get"))?resource=v1/defects">api/v1/defects</option>
-		<option value="@(Url.Action("Get"))?resource=v1/defects/{id}">api/v1/defects/{id}</option>
-		<option value="@(Url.Action("Get"))?resource=v1/features">api/v1/features</option>
-		<option value="@(Url.Action("Get"))?resource=v1/features/{id}">api/v1/features/{id}</option>
-		<option value="@(Url.Action("Get"))?resource=v1/incidents">api/v1/incidents</option>
-		<option value="@(Url.Action("Get"))?resource=v1/incidents/{id}">api/v1/incidents/{id}</option>
-		<option value="@(Url.Action("Get"))?resource=v1/tasks">api/v1/tasks</option>
-		<option value="@(Url.Action("Get"))?resource=v1/tasks/{id}">api/v1/tasks/{id}</option>
+	
+	<h2>Example API calls</h2>
+	<select id="api-call-method">
+		<option value="GET">GET</option>
+		<option value="POST">POST</option>
+	</select>
+	<select id="api-call-url">
+		<option value="@(Url.Action("Proxy"))?resource=v1/projects">api/v1/projects</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/projects/{id}">api/v1/projects/{id}</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/defects">api/v1/defects</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/defects/{id}">api/v1/defects/{id}</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/features">api/v1/features</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/features/{id}">api/v1/features/{id}</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/incidents">api/v1/incidents</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/incidents/{id}">api/v1/incidents/{id}</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/tasks">api/v1/tasks</option>
+		<option value="@(Url.Action("Proxy"))?resource=v1/tasks/{id}">api/v1/tasks/{id}</option>
 	</select>
 
-	<span id="api-get-id-label">id:</span><input type="text" id="api-get-id" value="1" />
+	<span id="api-call-id-label">id:</span><input type="text" id="api-call-id" value="1" />
 
 	<div>
-		<a href="#" class="btn" id="api-get">GET</a>
+		<textarea id="api-call-payload"></textarea>
 	</div>
 
 	<div>
-		<textarea id="api-get-results" disabled="disabled"></textarea>
+		<a href="#" class="btn" id="api-call">Make the API Call</a>
 	</div>
+
+	<div>
+		<textarea id="api-call-results" disabled="disabled"></textarea>
+	</div>
+
 
 	<h2>Example Attachment Upload</h2>
 	<form action="@Model.GetUrl("attachments")" enctype="multipart/form-data" method="post">
@@ -37,18 +47,31 @@
 
 <script type="text/javascript">
 // hide the id input unless it is needed for the selected API call
-var idInputNode = $('#api-get-id'),
-	urlInputNode = $('#api-get-url');
+var idInputNode = $('#api-call-id'),
+	urlInputNode = $('#api-call-url');
 
 function toggleIdInputNode() {
 	// we show the id input node if the url contains {id}
 	var showIdInputNode = urlInputNode.val().indexOf('{id}') != -1;
 	idInputNode.toggle(showIdInputNode);
-	$('#api-get-id-label').toggle(showIdInputNode);
+	$('#api-call-id-label').toggle(showIdInputNode);
 }
 
 toggleIdInputNode();
 urlInputNode.change(toggleIdInputNode);
+
+// hide the JSON payload input unless it is needed for the selected API call
+var payloadInputNode = $('#api-call-payload'),
+	methodInputNode = $('#api-call-method');
+
+function togglePayloadInputNode() {
+	// we show the payload input node if the method is POST
+	var showPayloadInputNode = methodInputNode.val() === 'POST';
+	payloadInputNode.toggle(showPayloadInputNode);
+}
+
+togglePayloadInputNode();
+methodInputNode.change(togglePayloadInputNode);
 
 function displayCallResults(jqXHR) {
 	var jsonResponse = jqXHR.responseText;
@@ -59,25 +82,36 @@ function displayCallResults(jqXHR) {
 	}
 	catch(e) {}
 
-	$('#api-get-results').val(jqXHR.statusText + "\n\n" + jsonResponse);
+	$('#api-call-results').val(jqXHR.statusText + "\n\n" + jsonResponse);
 }
 
-$('#api-get').click(function(event) {
+$('#api-call').click(function(event) {
 	event.preventDefault();
 
 	// compose the url, substituting the id if needed
 	var url = urlInputNode.val();
 	url = url.replace('{id}', idInputNode.val());
 	
-	// make the call to the Get action, which will forward the call to the OnTime API
-	$.ajax(url, {
+	var method = $('#api-call-method').val();
+
+	var settings = {
 		dataType: "text",
+		type: method,
 		success: function(data, textStatus, jqXHR) {
 			displayCallResults(jqXHR);
 		},
 		error: function(jqXHR, textStatus) {
 			displayCallResults(jqXHR);
 		}
-	});
+	};
+
+	// send the data if POSTing
+	if(method === 'POST') {
+		settings.contentType = 'application/json';
+		settings.data = payloadInputNode.val();
+	}
+
+	// make the call to the Proxy action, which will forward the call to the OnTime API
+	$.ajax(url, settings);
 });
 </script>
