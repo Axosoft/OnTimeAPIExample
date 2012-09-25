@@ -48,8 +48,19 @@ function toggleIdInputNode() {
 }
 
 toggleIdInputNode();
-
 urlInputNode.change(toggleIdInputNode);
+
+function displayCallResults(jqXHR) {
+	var jsonResponse = jqXHR.responseText;
+	// try to format the json response
+	try {
+		var parsedJson = JSON.parse(jsonResponse);
+		jsonResponse = JSON.stringify(parsedJson, null, 4);
+	}
+	catch(e) {}
+
+	$('#api-get-results').val(jqXHR.statusText + "\n\n" + jsonResponse);
+}
 
 $('#api-get').click(function(event) {
 	event.preventDefault();
@@ -61,11 +72,11 @@ $('#api-get').click(function(event) {
 	// make the call to the Get action, which will forward the call to the OnTime API
 	$.ajax(url, {
 		dataType: "text",
-		success: function(result, textStatus, jqXHR) {
-			$('#api-get-results').val(jqXHR.statusText + "\n\n" + result);
+		success: function(data, textStatus, jqXHR) {
+			displayCallResults(jqXHR);
 		},
 		error: function(jqXHR, textStatus) {
-			$('#api-get-results').val(jqXHR.statusText + "\n\n" + jqXHR.responseText);
+			displayCallResults(jqXHR);
 		}
 	});
 });
