@@ -43,8 +43,9 @@ namespace APIExample.Controllers
 			{
 				Response.ContentEncoding = Encoding.GetEncoding(response.ContentEncoding);
 			} catch(Exception) {}
-
 			Response.Charset = response.CharacterSet;
+			Response.StatusCode = (int)response.StatusCode;
+			Response.StatusDescription = response.StatusDescription;
 			
 			resultStream.CopyTo(Response.OutputStream);
 			

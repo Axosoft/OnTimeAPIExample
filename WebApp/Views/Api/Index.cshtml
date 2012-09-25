@@ -57,12 +57,15 @@ $('#api-get').click(function(event) {
 	// compose the url, substituting the id if needed
 	var url = urlInputNode.val();
 	url = url.replace('{id}', idInputNode.val());
-
+	
 	// make the call to the Get action, which will forward the call to the OnTime API
 	$.ajax(url, {
 		dataType: "text",
-		success: function(result) {
-			$('#api-get-results').val(result);
+		success: function(result, textStatus, jqXHR) {
+			$('#api-get-results').val(jqXHR.statusText + "\n\n" + result);
+		},
+		error: function(jqXHR, textStatus) {
+			$('#api-get-results').val(jqXHR.statusText + "\n\n" + jqXHR.responseText);
 		}
 	});
 });
