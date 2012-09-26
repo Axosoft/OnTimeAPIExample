@@ -68,9 +68,13 @@
 
 <script type="text/javascript">
 
+var apiCallButton = $('#api-call'),
+	idInputNode = $('#api-call-id'),
+	resourceInputNode = $('#api-call-resource'),
+	payloadInputNode = $('#api-call-payload'),
+	fileInputNode = $('#api-call-file');
+
 // hide the id input unless it is needed for the selected API call
-var idInputNode = $('#api-call-id'),
-	resourceInputNode = $('#api-call-resource');
 
 function toggleIdInputNode() {
 	// we show the id input node if the url contains {id}
@@ -106,7 +110,6 @@ methodInputNode.change(togglePayloadInputNode);
 resourceInputNode.change(togglePayloadInputNode);
 
 // show example JSON payloads
-var payloadInputNode = $('#api-call-payload');
 
 var jsonPayloadExamples = {
 	"v1/projects"			: '{\n    name : "Project Created from API Explorer"\n}',
@@ -139,11 +142,23 @@ $('#api-call-payload-example').click(function(event) {
 	payloadInputNode.val(jsonPayloadExamples[resource]);
 });
 
+// function to enable / disable the buttons
+function disableButtons() {
+	fileInputNode.attr("disabled", "disabled");
+	apiCallButton.attr("disabled", "disabled");
+}
+
+function enableButtons() {
+	fileInputNode.removeAttr("disabled");
+	apiCallButton.removeAttr("disabled");
+}
+
 // when a file is selected, load it in using FileReader
-var fileInputNode = $('#api-call-file');
 var loadedFile;
 
 fileInputNode.change(function() {
+	disableButtons();
+
 	loadedFile = null;
 	var file = fileInputNode.get(0).files[0];
 
@@ -151,12 +166,13 @@ fileInputNode.change(function() {
 	reader.onload = function(fileData) {
 		loadedFile = {
 			data: reader.result,
-			name: file.name,
+			name: file.name
 		};
 	};
 	reader.onerror = function() {
 		alert(reader.error);
 	};
+	reader.onloadend = enableButtons;
 
 	reader.readAsBinaryString(file);
 });
@@ -175,8 +191,10 @@ function displayCallResults(jqXHR) {
 	$('#api-call-results').val(jqXHR.statusText + "\n\n" + jsonResponse);
 }
 
-$('#api-call').click(function(event) {
+apiCallButton.click(function(event) {
 	event.preventDefault();
+
+	disableButtons();
 
 	// clear the results
 	$('#api-call-results').val('');
@@ -195,7 +213,8 @@ $('#api-call').click(function(event) {
 		},
 		error: function(jqXHR, textStatus) {
 			displayCallResults(jqXHR);
-		}
+		},
+		complete: enableButtons
 	};
 
 	// send the data if POSTing
