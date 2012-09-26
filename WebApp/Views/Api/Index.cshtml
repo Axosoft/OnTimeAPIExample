@@ -11,16 +11,37 @@
 		<option value="POST">POST</option>
 	</select>
 	<select id="api-call-resource">
-		<option value="v1/projects">api/v1/projects</option>
-		<option value="v1/projects/{id}">api/v1/projects/{id}</option>
-		<option value="v1/defects">api/v1/defects</option>
-		<option value="v1/defects/{id}">api/v1/defects/{id}</option>
-		<option value="v1/features">api/v1/features</option>
-		<option value="v1/features/{id}">api/v1/features/{id}</option>
-		<option value="v1/incidents">api/v1/incidents</option>
-		<option value="v1/incidents/{id}">api/v1/incidents/{id}</option>
-		<option value="v1/tasks">api/v1/tasks</option>
-		<option value="v1/tasks/{id}">api/v1/tasks/{id}</option>
+		<optgroup>
+			<option value="v1/projects">api/v1/projects</option>
+			<option value="v1/projects/{id}">api/v1/projects/{id}</option>
+			<option value="v1/releases">api/v1/releases</option>
+			<option value="v1/releases/{id}">api/v1/releases/{id}</option>
+			<option value="v1/users">api/v1/users</option>
+			<option value="v1/users/{id}">api/v1/users/{id}</option>
+			<option value="v1/customers">api/v1/customers</option>
+			<option value="v1/customers/{id}">api/v1/customers/{id}</option>
+			<option value="v1/contacts">api/v1/contacts</option>
+			<option value="v1/contacts/{id}">api/v1/contacts/{id}</option>
+		</optgroup>
+
+		<optgroup>
+			<option value="v1/defects">api/v1/defects</option>
+			<option value="v1/defects/{id}">api/v1/defects/{id}</option>
+			<option value="v1/features">api/v1/features</option>
+			<option value="v1/features/{id}">api/v1/features/{id}</option>
+			<option value="v1/incidents">api/v1/incidents</option>
+			<option value="v1/incidents/{id}">api/v1/incidents/{id}</option>
+			<option value="v1/tasks">api/v1/tasks</option>
+			<option value="v1/tasks/{id}">api/v1/tasks/{id}</option>
+		</optgroup>
+
+		<optgroup>
+			<option value="v1/defects/{id}/attachments">api/v1/defects/{id}/attachments</option>
+			<option value="v1/features/{id}/attachments">api/v1/features/{id}/attachments</option>
+			<option value="v1/incidents/{id}/attachments">api/v1/incidents/{id}/attachments</option>
+			<option value="v1/tasks/{id}/attachments">api/v1/tasks/{id}/attachments</option>
+			<option value="v1/attachments/{id}">api/v1/attachments/{id}</option>		
+		</optgroup>
 	</select>
 
 	<span id="api-call-id-label">id:</span><input type="text" id="api-call-id" value="1" />
@@ -32,6 +53,10 @@
 		</div>
 	</div>
 
+	<div id='api-call-file-container'>
+		<input type="file" id="api-call-file" />
+	</div>
+
 	<div>
 		<a href="#" class="btn" id="api-call">Make the API Call</a>
 	</div>
@@ -39,16 +64,10 @@
 	<div>
 		<textarea id="api-call-results" disabled="disabled"></textarea>
 	</div>
-
-
-	<h2>Example Attachment Upload</h2>
-	<form action="@Model.GetUrl("attachments")" enctype="multipart/form-data" method="post">
-	<input type="file" name="file" class="input-file" />
-	<input type="submit" value="Upload Attachment" class="btn"/>
-	</form>
 </div>
 
 <script type="text/javascript">
+
 // hide the id input unless it is needed for the selected API call
 var idInputNode = $('#api-call-id'),
 	resourceInputNode = $('#api-call-resource');
@@ -64,31 +83,53 @@ toggleIdInputNode();
 resourceInputNode.change(toggleIdInputNode);
 
 // hide the JSON payload input unless it is needed for the selected API call
+
+function postIsAttachmentAdd() {
+	var resource = resourceInputNode.val();
+	return resource.indexOf('{id}/attachments') !== -1;
+}
+
 var methodInputNode = $('#api-call-method');
 
 function togglePayloadInputNode() {
-	// we show the payload input node if the method is POST
-	var showPayloadInputNode = methodInputNode.val() === 'POST';
+	// we show the payload input node if the method is POST, but not for attachment adds
+	var showPayloadInputNode = methodInputNode.val() === 'POST' && !postIsAttachmentAdd();
 	$('#api-call-payload-container').toggle(showPayloadInputNode);
+
+	// show the file input node if the method is POST, and it is an attachment add
+	var showFileInputNode = methodInputNode.val() === 'POST' && postIsAttachmentAdd();
+	$('#api-call-file-container').toggle(showFileInputNode);
 }
 
 togglePayloadInputNode();
 methodInputNode.change(togglePayloadInputNode);
+resourceInputNode.change(togglePayloadInputNode);
 
 // show example JSON payloads
 var payloadInputNode = $('#api-call-payload');
 
 var jsonPayloadExamples = {
-	"v1/projects"		: '{\n    name : "Project Created from API Explorer"\n}',
-	"v1/projects/{id}"	: '{\n    name : "Project Renamed from API Explorer"\n}',
-	"v1/defects"		: '{\n    item: {\n        name : "Defect Created from API Explorer",\n        project: { id: 1 }\n    }\n}',
-	"v1/defects/{id}"	: '{\n    item: {\n        name : "Defect Renamed from API Explorer"\n    }\n}',
-	"v1/features"		: '{\n    item: {\n        name : "Feature Created from API Explorer",\n        project: { id: 1 }\n    }\n}',
-	"v1/features/{id}"	: '{\n    item: {\n        name : "Feature Renamed from API Explorer"\n    }\n}',
-	"v1/incidents"		: '{\n    item: {\n        name : "Incident Created from API Explorer",\n        project: { id: 1 }\n    }\n}',
-	"v1/incidents/{id}"	: '{\n    item: {\n        name : "Incident Renamed from API Explorer"\n    }\n}',
-	"v1/tasks"			: '{\n    item: {\n        name : "Task Created from API Explorer",\n        project: { id: 1 }\n    }\n}',
-	"v1/tasks/{id}"		: '{\n    item: {\n        name : "Task Renamed from API Explorer"\n    }\n}'
+	"v1/projects"			: '{\n    name : "Project Created from API Explorer"\n}',
+	"v1/projects/{id}"		: '{\n    name : "Project Renamed from API Explorer"\n}',
+	"v1/releases"			: '{\n    name : "Release Created from API Explorer",\n    release_type: { id : 1 }\n}',
+	"v1/releases/{id}"		: '{\n    name : "Release Renamed from API Explorer"\n}',
+	"v1/users"				: '{\n    login_id : "ApiExplorer",\n    first_name : "API",\n    last_name : "Explorer",\n    security_roles : [ 1 ]\n}',
+	"v1/users/{id}"			: '{\n    first_name : "Renamed"\n}',
+	"v1/customers"			: '{\n    company_name : "Customer Created from API Explorer"\n}',
+	"v1/customers/{id}"		: '{\n    company_name : "Customer Renamed from API Explorer"\n}',
+	"v1/contacts"			: '{\n    first_name : "API",\n    last_name : "Explorer",\n    customer_id : 1\n}',
+	"v1/contacts/{id}"		: '{\n    first_name : "Renamed"\n}',
+
+	"v1/defects"			: '{\n    item: {\n        name : "Defect Created from API Explorer",\n        project : { id : 1 }\n    }\n}',
+	"v1/defects/{id}"		: '{\n    item: {\n        name : "Defect Renamed from API Explorer"\n    }\n}',
+	"v1/features"			: '{\n    item: {\n        name : "Feature Created from API Explorer",\n        project : { id : 1 }\n    }\n}',
+	"v1/features/{id}"		: '{\n    item: {\n        name : "Feature Renamed from API Explorer"\n    }\n}',
+	"v1/incidents"			: '{\n    item: {\n        name : "Incident Created from API Explorer",\n        project : { id : 1 }\n    }\n}',
+	"v1/incidents/{id}"		: '{\n    item: {\n        name : "Incident Renamed from API Explorer"\n    }\n}',
+	"v1/tasks"				: '{\n    item: {\n        name : "Task Created from API Explorer",\n        project : { id : 1 }\n    }\n}',
+	"v1/tasks/{id}"			: '{\n    item: {\n        name : "Task Renamed from API Explorer"\n    }\n}',
+
+	"v1/attachments/{id}"	: '{\n    description : "Description Updated from API Explorer"\n}'
 };
 
 $('#api-call-payload-example').click(function(event) {
@@ -96,6 +137,28 @@ $('#api-call-payload-example').click(function(event) {
 
 	var resource = resourceInputNode.val();
 	payloadInputNode.val(jsonPayloadExamples[resource]);
+});
+
+// when a file is selected, load it in using FileReader
+var fileInputNode = $('#api-call-file');
+var loadedFile;
+
+fileInputNode.change(function() {
+	loadedFile = null;
+	var file = fileInputNode.get(0).files[0];
+
+	var reader = new FileReader();
+	reader.onload = function(fileData) {
+		loadedFile = {
+			data: reader.result,
+			name: file.name,
+		};
+	};
+	reader.onerror = function() {
+		alert(reader.error);
+	};
+
+	reader.readAsBinaryString(file);
 });
 
 // process API calls
@@ -114,6 +177,9 @@ function displayCallResults(jqXHR) {
 
 $('#api-call').click(function(event) {
 	event.preventDefault();
+
+	// clear the results
+	$('#api-call-results').val('');
 
 	// compose the url, substituting the id if needed
 	var url = '@(Url.Action("Proxy"))?resource=' + resourceInputNode.val();
@@ -134,11 +200,22 @@ $('#api-call').click(function(event) {
 
 	// send the data if POSTing
 	if(method === 'POST') {
-		settings.contentType = 'application/json';
-		settings.data = payloadInputNode.val();
+		if(postIsAttachmentAdd()) {
+			// we can add an attachment by posting a form the contents in the request as an octet-stream,
+			// and passing the rest of the parameters in the URL
+			settings.contentType = 'application/octet-stream';
+			settings.data = loadedFile.data;
+			url = url + '&file_name=' + encodeURIComponent(loadedFile.name);
+		}
+		else {
+			// for all other request, we post a json object
+			settings.contentType = 'application/json';
+			settings.data = payloadInputNode.val();
+		}
 	}
 
 	// make the call to the Proxy action, which will forward the call to the OnTime API
 	$.ajax(url, settings);
+
 });
 </script>

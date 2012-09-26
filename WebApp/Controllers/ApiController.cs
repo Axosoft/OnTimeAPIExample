@@ -25,7 +25,12 @@ namespace APIExample.Controllers
 			var OnTime = GetOnTime();
 
 			// create the HTTP request
-			var request = WebRequest.Create(OnTime.GetUrl(resource)); //using the URL of the specified resource
+			var url = OnTime.GetUrl(resource); //using the URL of the specified resource
+			// forward any query parameters (other than resource)
+			foreach(string queryElement in Request.QueryString)
+				if(queryElement != "resource")
+					url += "&" + HttpUtility.UrlEncode(queryElement) + "=" + HttpUtility.UrlEncode(Request.QueryString[queryElement]);
+			var request = WebRequest.Create(url); 
 			request.Method = Request.HttpMethod; // use the same method that was used to make the proxy call
 			if(string.Compare(Request.HttpMethod, "POST", ignoreCase: true) == 0)
 			{
