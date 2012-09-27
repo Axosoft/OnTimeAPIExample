@@ -7,6 +7,7 @@ using OnTimeApi;
 
 namespace APIExample.FormsAuth
 {
+	[Serializable]
 	public class OnTimeIdentity : User, IIdentity
 	{
 		public string AccessToken { get; private set; }
