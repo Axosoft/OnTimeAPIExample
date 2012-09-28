@@ -46,16 +46,17 @@ namespace APIExample.Controllers
 						scope: "read write"
 					);
 					// get information about the logged in user
-					var user = MvcApplication.CacheCurrentUser(accessToken);
+					var loggedInUser = OnTime.Get<DataResponse<OnTimeApi.User>>("v1/users/me").data;
+					var identityName = loggedInUser.login_id; // use the login_id as the FormsIdentity name
 
-					var ticket = new FormsAuthenticationTicket(1, user.login_id, DateTime.Now, DateTime.Now + FormsAuthentication.Timeout, false, accessToken);
+					var ticket = new FormsAuthenticationTicket(1, identityName, DateTime.Now, DateTime.Now + FormsAuthentication.Timeout, false, accessToken /* store the access token as the userData */);
 
 					var encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
 					HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 					Response.Cookies.Add(authCookie);
 
-					Response.Redirect(FormsAuthentication.GetRedirectUrl(user.login_id, false));
+					Response.Redirect(FormsAuthentication.GetRedirectUrl(identityName, false));
 				}
 				catch(OnTimeException e)
 				{

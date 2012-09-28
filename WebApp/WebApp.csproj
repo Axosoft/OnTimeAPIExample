@@ -62,7 +62,6 @@
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
-    <Compile Include="FormsAuth\OnTimeIdentity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

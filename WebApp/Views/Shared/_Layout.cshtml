@@ -13,7 +13,7 @@
 			<div class="btn">
 			@if(User.Identity.IsAuthenticated)
 			{
-				@Html.ActionLink("Log Out " + ((APIExample.FormsAuth.OnTimeIdentity)User.Identity).login_id, "LogOut", "Home")
+				@Html.ActionLink("Log Out " + (User.Identity).Name, "LogOut", "Home")
 			}
 			else
 			{

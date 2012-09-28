@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using OnTimeApi;
-using System.Net;
-using APIExample.FormsAuth;
-using System.IO;
-using System.Text;
+using System.Web.Security;
 
 namespace APIExample.Controllers
 {
@@ -69,7 +67,7 @@ namespace APIExample.Controllers
 
 		private OnTime GetOnTime()
 		{
-			return new OnTime(MvcApplication.Settings, ((OnTimeIdentity)User.Identity).AccessToken);
+			return new OnTime(MvcApplication.Settings, ((FormsIdentity)User.Identity).Ticket.UserData /* we are storing the Access Token in the UserData of the ticket */);
 		}
     }
 }
