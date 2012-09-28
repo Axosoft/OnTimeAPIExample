@@ -6,7 +6,10 @@ One is "Defects Explorer", a C# Windows application allowing you to view, delete
 The other is "API Explorer", an MVC web application that allows you to make arbitrary OnTime API calls
 and shows verbatim JSON responses.
 
-Both examples are in a Visual Studio 2010 solution as separate projects.
+Both examples are in a Visual Studio 2010 solution with the following projects:
+ * WinApp - the Defects Explorer example
+ * WebApp - the API Explorer example
+ * OnTime - shared code used to communicate with the API
 
 [api_docs]: http://developer.ontimenow.com
 
