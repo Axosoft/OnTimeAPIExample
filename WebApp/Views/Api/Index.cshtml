@@ -109,9 +109,9 @@ toggleDataInputNode();
 methodInputNode.change(toggleDataInputNode);
 resourceInputNode.change(toggleDataInputNode);
 
-// show example JSON payloads
+// show example JSON body data
 
-var jsonPayloadExamples = {
+var dataExamples = {
 	"v1/projects"			: '{\n    name : "Project Created from API Explorer"\n}',
 	"v1/projects/{id}"		: '{\n    name : "Project Renamed from API Explorer"\n}',
 	"v1/releases"			: '{\n    name : "Release Created from API Explorer",\n    release_type: { id : 1 }\n}',
@@ -139,7 +139,7 @@ $('#api-call-data-example').click(function(event) {
 	event.preventDefault();
 
 	var resource = resourceInputNode.val();
-	dataInputNode.val(jsonPayloadExamples[resource]);
+	dataInputNode.val(dataExamples[resource]);
 });
 
 // function to enable / disable the buttons
