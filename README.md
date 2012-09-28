@@ -2,8 +2,9 @@ OnTime API Example
 ------------------
 
 This repository contains two example applications that use the [OnTime RESTful API][api_docs].
-One is "Defects Explorer", a C# application allowing you to view and add defects, as well as add attachments.
-The other is "API Explorer", a MVC web application that shows verbatim JSON responses of several OnTime API calls.
+One is "Defects Explorer", a C# Windows application allowing you to view, delete and add defects, as well as add attachments.
+The other is "API Explorer", an MVC web application that allows you to make arbitrary OnTime API calls
+and shows verbatim JSON responses.
 
 Both examples are in a Visual Studio 2010 solution as separate projects.
 
