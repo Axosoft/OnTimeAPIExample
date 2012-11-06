@@ -39,6 +39,7 @@
 			// label5
 			// 
 			this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+			this.label5.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
 			this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
 			this.label5.Location = new System.Drawing.Point(0, 0);
@@ -53,13 +54,15 @@
 			this.panel1.Controls.Add(this.loginControl);
 			this.panel1.Controls.Add(this.updateConfigControl);
 			this.panel1.Controls.Add(this.ItemsControl);
-			this.panel1.Location = new System.Drawing.Point(0, 52);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(0, 55);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(785, 335);
+			this.panel1.Size = new System.Drawing.Size(784, 331);
 			this.panel1.TabIndex = 10;
 			// 
 			// loginControl
 			// 
+			this.loginControl.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.loginControl.Location = new System.Drawing.Point(221, 91);
 			this.loginControl.Name = "loginControl";
 			this.loginControl.Size = new System.Drawing.Size(338, 150);
@@ -69,17 +72,19 @@
 			// updateConfigControl
 			// 
 			this.updateConfigControl.BackColor = System.Drawing.Color.White;
+			this.updateConfigControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.updateConfigControl.Location = new System.Drawing.Point(0, 0);
 			this.updateConfigControl.Name = "updateConfigControl";
-			this.updateConfigControl.Size = new System.Drawing.Size(785, 335);
+			this.updateConfigControl.Size = new System.Drawing.Size(784, 331);
 			this.updateConfigControl.TabIndex = 10;
 			this.updateConfigControl.Visible = false;
 			// 
 			// ItemsControl
 			// 
+			this.ItemsControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ItemsControl.Location = new System.Drawing.Point(0, 0);
 			this.ItemsControl.Name = "ItemsControl";
-			this.ItemsControl.Size = new System.Drawing.Size(782, 335);
+			this.ItemsControl.Size = new System.Drawing.Size(784, 331);
 			this.ItemsControl.TabIndex = 9;
 			this.ItemsControl.Visible = false;
 			// 
@@ -92,6 +97,7 @@
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.label5);
 			this.Name = "ApiForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "OnTime API Example";
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);

@@ -59,7 +59,6 @@
 			// 
 			// toolStrip2
 			// 
-			toolStrip2.Anchor = System.Windows.Forms.AnchorStyles.None;
 			toolStrip2.AutoSize = false;
 			toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
 			toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -82,6 +81,9 @@
 			this.ItemsGridView.AllowUserToDeleteRows = false;
 			this.ItemsGridView.AllowUserToResizeColumns = false;
 			this.ItemsGridView.AllowUserToResizeRows = false;
+			this.ItemsGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.ItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.ItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,

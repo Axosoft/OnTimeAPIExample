@@ -28,6 +28,12 @@ namespace WinApp
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
+			// set up SSL certificate warning callback
+			System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate
+			{
+				return (MessageBox.Show("There is a problem with the server's SSL certificate.  Do you want to ignore the SSL errors?", "SSL certificate error", MessageBoxButtons.YesNo) == DialogResult.Yes);
+			};
+
 			// set up and start form
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
