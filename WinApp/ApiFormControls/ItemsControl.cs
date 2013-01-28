@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using OnTimeApi;
 using System.Net;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace WinApp
 {
@@ -182,9 +183,14 @@ namespace WinApp
 					{
 						// get id of selected item
 						var id = (int)ItemsGridView.CurrentRow.Cells["id"].Value;
-						OnTime.Post<MessageResponse>(string.Format("v1/defects/{0}/attachments", id), stream, new Dictionary<string, object> {
-							{ "file_name",  Path.GetFileName(openFileDialog.FileName)},
-						});
+
+						// OnTime currently has a bug in the POST attachments API call - it expects the bytes of the request body to be UTF-8 encoded
+						using (var utf8EncodedStream = new CryptoStream(stream, new UTF8ByteEncoder(), CryptoStreamMode.Read))
+						{
+							OnTime.Post<MessageResponse>(string.Format("v1/defects/{0}/attachments", id), utf8EncodedStream, new Dictionary<string, object> {
+								{ "file_name",  Path.GetFileName(openFileDialog.FileName)},
+							});
+						}
 
 					}
 				}
@@ -194,6 +200,58 @@ namespace WinApp
 		void ComboBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			GetItems();
+		}
+	}
+
+	// This is used to POST an attachment, due to a bug in OnTime that expects the content to be encoded this way
+	class UTF8ByteEncoder : ICryptoTransform
+	{
+		public bool CanReuseTransform
+		{
+			get { return true; }
+		}
+
+		public bool CanTransformMultipleBlocks
+		{
+			get { return true; }
+		}
+
+		public int InputBlockSize
+		{
+			get { return 1; }
+		}
+
+		public int OutputBlockSize
+		{
+			get { return 2; }
+		}
+
+		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+		{
+			var originalOutputOffset = outputOffset;
+			for(var inputIndex=0; inputIndex<inputCount;  inputIndex++)
+			{
+				var b = inputBuffer[inputOffset + inputIndex];
+				if((b & 128) > 0)
+				{
+					outputBuffer[outputOffset++] = (byte)((b >> 6) | 0xc0);
+					outputBuffer[outputOffset++] = (byte)((b & 0x3f) | 0x80);
+				}
+				else
+					outputBuffer[outputOffset++] = b;
+			}
+			return outputOffset - originalOutputOffset;
+		}
+
+		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+		{
+			var outputBuffer = new byte[inputBuffer.Length * 2];
+			var outputCount = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
+			return outputBuffer.Take(outputCount).ToArray();
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }
