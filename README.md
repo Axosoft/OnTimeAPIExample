@@ -28,7 +28,7 @@ or Web.config files.
 If you'd rather not work with your live OnTime data while experimenting with the API, you can sign up for a
 trial account on http://www.ontimenow.com/.
 
-[api_docs_getting_started]: http://developer.ontimenow.com/get-started
+[api_docs_getting_started]: http://developer.ontimenow.com/getting-started
 
 License
 -------
