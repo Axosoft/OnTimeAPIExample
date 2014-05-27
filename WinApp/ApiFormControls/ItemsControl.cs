@@ -6,16 +6,18 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using OnTimeApi;
 using System.Net;
 using System.IO;
 using System.Security.Cryptography;
+using AxosoftAPI.NET.Models;
+using AxosoftAPI.NET;
+using AxosoftAPI.NET.Helpers;
 
 namespace WinApp
 {
 	public partial class ItemsControl : UserControl
 	{
-		OnTime OnTime;
+		Proxy AxosoftProxy;
 
 		BindingList<Project> Projects = new BindingList<Project>();
 		BindingList<Item> Items = new BindingList<Item>();
@@ -25,8 +27,8 @@ namespace WinApp
 			InitializeComponent();
 
 			// configure project combo box in toolbar
-			ProjectComboBox.ComboBox.ValueMember = "id";
-			ProjectComboBox.ComboBox.DisplayMember = "name";
+			ProjectComboBox.ComboBox.ValueMember = "Id";
+			ProjectComboBox.ComboBox.DisplayMember = "Name";
 			ProjectComboBox.ComboBox.DataSource = Projects;
 			ProjectComboBox.ComboBox.SelectedValueChanged += new EventHandler(ComboBox_SelectedValueChanged);
 
@@ -41,35 +43,37 @@ namespace WinApp
 
 		void Application_ApplicationExit(object sender, EventArgs e)
 		{
-			if(OnTime != null && OnTime.HasAccessToken())
-				OnTime.Get<MessageResponse>("oauth2/revoke");			
+			if (AxosoftProxy != null && string.IsNullOrWhiteSpace(AxosoftProxy.AccessToken))
+			{
+				AxosoftProxy.Get<object>("oauth2/revoke");
+			}
 		}
 
-		public void SetOnTime(OnTime onTime)
+		public void SetAxosoftProxy(Proxy axosoftProxy)
 		{
-			OnTime = onTime;
+			AxosoftProxy = axosoftProxy;
 
-			// set OnTime host label
-			OnTimeHostLabel.Text = new Uri(OnTime.Settings.OnTimeUrl).Host;
+			// set Axosoft host label
+			AxosoftHostLabel.Text = new Uri(Program.Settings.Url).Host;
 
 			GetProjects();
-			if(Projects.Count == 0)
+			if (Projects.Count == 0)
 			{
 				// there are no projects. ask the user if they want to create a new project.
 				var dialogResult = MessageBox.Show(
-					"Your OnTime database has no projects. To use this example, you will need to create a project. Would you like to create a new project called \"API Example Project\" now?",
-					"Create an OnTime project",
-					MessageBoxButtons.YesNo, 
+					"Your Axosoft database has no projects. To use this example, you will need to create a project. Would you like to create a new project called \"API Example Project\" now?",
+					"Create an Axosoft scrum project",
+					MessageBoxButtons.YesNo,
 					MessageBoxIcon.Question);
 
-				if(dialogResult == DialogResult.Yes)
+				if (dialogResult == DialogResult.Yes)
 				{
 					var project = new Project
 					{
-						name = "API Example Project"
+						Name = "API Example Project"
 					};
 
-					OnTime.Post<DataResponse<Project>>("v1/projects", project);
+					AxosoftProxy.Projects.Create(project);
 					GetProjects();
 				}
 				else
@@ -83,32 +87,38 @@ namespace WinApp
 
 		void GetItems()
 		{
-			var result = OnTime.Get<DataResponse<List<Item>>>("v1/defects", new Dictionary<string, object> {
-				{ "project_id", ((Project)ProjectComboBox.SelectedItem).id },
+			var result = AxosoftProxy.Defects.Get(new Dictionary<string, object> {
+				{ "project_id", ((Project)ProjectComboBox.SelectedItem).Id },
 				{ "sort_fields", "id desc" },
 				{ "page_size", 10 },
-				{ "columns", "id,name,project" }
+				{ "columns", "id,name,reported_date" }
 			});
 
 			Items.Clear();
-			foreach(var item in result.data)
+
+			foreach (var item in result.Data)
+			{
 				Items.Add(item);
+			}
 		}
 
 		void GetProjects()
 		{
-			var result = OnTime.Get<DataResponse<List<Project>>>("v1/projects");
-			
+			var result = AxosoftProxy.Projects.Get();
+
 			Projects.Clear();
-			foreach(var project in result.data)
+
+			foreach (var project in result.Data)
+			{
 				Projects.Add(project);
+			}
 		}
 
 		// called on grid selection change, enables / disables buttons as appropriate
 		void ItemsGridView_SelectionChanged(object sender, EventArgs e)
 		{
 			var count = ItemsGridView.SelectedRows.Count;
-			var newItemInSelection = ItemsGridView.SelectedRows.Cast<DataGridViewRow>().Any(row => (int)row.Cells["id"].Value == 0);
+			var newItemInSelection = ItemsGridView.SelectedRows.Cast<DataGridViewRow>().Any(row => row.Cells["id"].Value == null || (int)row.Cells["id"].Value == 0);
 			DeleteButton.Enabled = !newItemInSelection && (count > 0); // enable delete if any items are selected (and none of them is the new item)
 			AddAttachmentButton.Enabled = !newItemInSelection && count == 1; // only enable add attachment if one item is selected (and it's not the new item)
 		}
@@ -122,11 +132,11 @@ namespace WinApp
 			ItemsGridView.BeginEdit(true);
 		}
 
-		void ItemsGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+		private void ItemsGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
 		{
 			var newItemName = (string)ItemsGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
-			if(string.IsNullOrEmpty(newItemName))
+			if (string.IsNullOrEmpty(newItemName))
 			{
 				// no name was entered - cancel add
 				Items.RemoveAt(0);
@@ -135,14 +145,14 @@ namespace WinApp
 			{
 				var item = new Item
 				{
-					name = newItemName,
-					project = new Project
+					Name = newItemName,
+					Project = new Project
 					{
-						id = (int)ProjectComboBox.ComboBox.SelectedValue
+						Id = (int)ProjectComboBox.ComboBox.SelectedValue
 					}
 				};
 
-				OnTime.Post<DataResponse<Item>>("v1/defects", new { item = item });
+				AxosoftProxy.Defects.Create(item);
 
 				GetItems();
 			}
@@ -152,18 +162,18 @@ namespace WinApp
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
 			var count = ItemsGridView.SelectedRows.Count;
-			if(count > 0)
+			if (count > 0)
 			{
 				var dialogResult = MessageBox.Show(
 					string.Format("This action is not reversible. Are you sure you want to delete {0} defect{1}?", count, count > 1 ? "s" : ""),
 					"Delete confirmation",
-					MessageBoxButtons.YesNo, 
+					MessageBoxButtons.YesNo,
 					MessageBoxIcon.Warning);
 
-				if(dialogResult == DialogResult.Yes)
+				if (dialogResult == DialogResult.Yes)
 				{
-					foreach(DataGridViewRow row in ItemsGridView.SelectedRows)
-						OnTime.Delete("v1/defects", (int)row.Cells["id"].Value);
+					foreach (DataGridViewRow row in ItemsGridView.SelectedRows)
+						AxosoftProxy.Defects.Delete((int)row.Cells["id"].Value);
 					GetItems();
 				}
 			}
@@ -174,7 +184,7 @@ namespace WinApp
 			// have user select a file to attach
 			var openFileDialog = new OpenFileDialog();
 
-			if(openFileDialog.ShowDialog() == DialogResult.OK)
+			if (openFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				Stream stream;
 				if ((stream = openFileDialog.OpenFile()) != null)
@@ -184,26 +194,33 @@ namespace WinApp
 						// get id of selected item
 						var id = (int)ItemsGridView.CurrentRow.Cells["id"].Value;
 
-						// OnTime currently has a bug in the POST attachments API call - it expects the bytes of the request body to be UTF-8 encoded
-						using (var utf8EncodedStream = new CryptoStream(stream, new UTF8ByteEncoder(), CryptoStreamMode.Read))
+						var attachment = new Attachment
 						{
-							OnTime.Post<MessageResponse>(string.Format("v1/defects/{0}/attachments", id), utf8EncodedStream, new Dictionary<string, object> {
-								{ "file_name",  Path.GetFileName(openFileDialog.FileName)},
+							Data = stream,
+							FileName = Path.GetFileName(openFileDialog.FileName)
+						};
+
+						var result = AxosoftProxy.Defects.AddAttachment(id, attachment);
+
+						if (!result.IsSuccessful)
+						{
+							throw new AxosoftAPIException<ErrorResponse>(new ErrorResponse
+							{
+								Message = result.ErrorMessage,
 							});
 						}
-
 					}
 				}
 			}
 		}
 
-		void ComboBox_SelectedValueChanged(object sender, EventArgs e)
+		private void ComboBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			GetItems();
 		}
 	}
 
-	// This is used to POST an attachment, due to a bug in OnTime that expects the content to be encoded this way
+	// This is used to POST an attachment, due to a bug in Axosoft that expects the content to be encoded this way
 	class UTF8ByteEncoder : ICryptoTransform
 	{
 		public bool CanReuseTransform
@@ -229,10 +246,10 @@ namespace WinApp
 		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
 		{
 			var originalOutputOffset = outputOffset;
-			for(var inputIndex=0; inputIndex<inputCount;  inputIndex++)
+			for (var inputIndex = 0; inputIndex < inputCount; inputIndex++)
 			{
 				var b = inputBuffer[inputOffset + inputIndex];
-				if((b & 128) > 0)
+				if ((b & 128) > 0)
 				{
 					outputBuffer[outputOffset++] = (byte)((b >> 6) | 0xc0);
 					outputBuffer[outputOffset++] = (byte)((b & 0x3f) | 0x80);

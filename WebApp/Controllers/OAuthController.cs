@@ -6,23 +6,35 @@ using System.Web.Mvc;
 using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
-using OnTimeApi;
 using System.Web.Security;
+using AxosoftAPI.NET;
+using AxosoftAPI.NET.Helpers;
+using AxosoftAPI.NET.Models;
 
-namespace APIExample.Controllers
+namespace WebApp.Controllers
 {
-    public class OAuthController : Controller
-    {
-		OnTime OnTime = new OnTime(MvcApplication.Settings);
+	public class OAuthController : Controller
+	{
+		private Proxy axosoftProxy;
+
+		public OAuthController()
+		{
+			axosoftProxy = new Proxy
+			{
+				Url = MvcApplication.Settings.Url,
+				ClientId = MvcApplication.Settings.ClientId,
+				ClientSecret = MvcApplication.Settings.ClientSecret
+			};
+		}
 
 		#region Authorization Code grant type
 
-        public ActionResult ObtainVerificationCode()
-        {
-			// Redirect end-user to OnTime's auth page
+		public ActionResult ObtainVerificationCode()
+		{
+			// Redirect end-user to Axosoft's auth page
 			var settings = MvcApplication.Settings;
 
-			var authUrl = new UriBuilder(settings.OnTimeUrl);
+			var authUrl = new UriBuilder(settings.Url);
 			authUrl.Path += "auth";
 
 			// Add OAuth2 parameters
@@ -30,24 +42,25 @@ namespace APIExample.Controllers
 				HttpUtility.UrlEncode(settings.ClientId),
 				HttpUtility.UrlEncode(GetRedirectUri())
 			);
-			
+
 			return Redirect(authUrl.ToString());
-        }
+		}
 
 		public ActionResult AuthorizationCodeCallback(string code, string error)
 		{
-			if(!string.IsNullOrEmpty(code))
+			if (!string.IsNullOrEmpty(code))
 			{
 				try
 				{
-					var accessToken = OnTime.ObtainAccessTokenFromAuthorizationCode(
+					var accessToken = axosoftProxy.ObtainAccessTokenFromAuthorizationCode(
 						code: code,
 						redirectUri: GetRedirectUri(),
-						scope: "read write"
+						scope: ScopeEnum.ReadWrite
 					);
+
 					// get information about the logged in user
-					var loggedInUser = OnTime.Get<DataResponse<OnTimeApi.User>>("v1/users/me").data;
-					var identityName = loggedInUser.login_id; // use the login_id as the FormsIdentity name
+					var loggedInUser = axosoftProxy.Me.Get().Data;
+					var identityName = loggedInUser.LoginId; // use the login_id as the FormsIdentity name
 
 					var ticket = new FormsAuthenticationTicket(1, identityName, DateTime.Now, DateTime.Now + FormsAuthentication.Timeout, false, accessToken /* store the access token as the userData */);
 
@@ -58,14 +71,14 @@ namespace APIExample.Controllers
 
 					Response.Redirect(FormsAuthentication.GetRedirectUrl(identityName, false));
 				}
-				catch(OnTimeException e)
+				catch (AxosoftAPIException<ErrorResponse> e)
 				{
-					Response.Write("An error occurred when obtaining access token from OnTime: " + e.Message);
+					Response.Write("An error occurred when obtaining access token from Axosoft: " + e.Message);
 				}
 			}
 			else
 			{
-				Response.Write("Obtaining an access token from OnTime failed with an error: " + error);
+				Response.Write("Obtaining an access token from Axosoft failed with an error: " + error);
 			}
 			return null;
 		}
@@ -79,5 +92,5 @@ namespace APIExample.Controllers
 			redirectUri.Query = null;
 			return redirectUri.ToString();
 		}
-    }
+	}
 }

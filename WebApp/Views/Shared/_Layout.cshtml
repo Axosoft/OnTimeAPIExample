@@ -1,27 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+	<title>@ViewBag.Title</title>
+	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../../Scripts/jquery-1.8.0.min.js"></script>
 </head>
 
 <body>
-	<header>OnTime API Explorer
+	<header>
+		Axosoft API Explorer
 		<div class="pull-right">
-			<div class="btn">
-			@if(User.Identity.IsAuthenticated)
+			@if (ViewBag.Title != "UpdateConfig")
 			{
-				@Html.ActionLink("Log Out " + (User.Identity).Name, "LogOut", "Home")
+				<div class="btn">
+
+					@if (User.Identity.IsAuthenticated)
+					{
+						@Html.ActionLink("Log Out " + (User.Identity).Name, "LogOut", "Home")
+					}
+					else
+					{
+						@Html.ActionLink("Log In", "ObtainVerificationCode", "OAuth")
+					}
+				</div>
 			}
-			else
-			{
-				@Html.ActionLink("Log In", "ObtainVerificationCode", "OAuth")
-			}
-			</div>
 		</div>
 	</header>
-    @RenderBody()
+	@RenderBody()
 </body>
 </html>

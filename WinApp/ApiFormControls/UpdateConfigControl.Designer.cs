@@ -40,29 +40,29 @@
 			this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(12)))), ((int)(((byte)(0)))));
 			this.label1.Location = new System.Drawing.Point(3, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(553, 26);
+			this.label1.Size = new System.Drawing.Size(549, 26);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "There is no OnTime instance linked with this application.";
+			this.label1.Text = "There is no Axosoft instance linked with this application.";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(5, 35);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(571, 13);
+			this.label2.Size = new System.Drawing.Size(569, 13);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "Please close the application window and update your App.config file with your OnT" +
-    "ime URL, Client ID and Client Secret.";
+			this.label2.Text = "Please close the application window and update your App.config file with your Axo" +
+    "soft URL, Client ID and Client Secret.";
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(5, 58);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(560, 13);
+			this.label3.Size = new System.Drawing.Size(543, 13);
 			this.label3.TabIndex = 2;
 			this.label3.Text = "You can find more information on obtaining a Client ID and Secret at http://devel" +
-    "oper.ontimenow.com/getting-started.";
+    "oper.axosoft.com/getting-started.";
 			// 
 			// UpdateConfigControl
 			// 

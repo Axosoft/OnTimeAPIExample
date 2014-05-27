@@ -12,6 +12,10 @@ header {
 
 .container textarea {
 	width: 100%;
-	height: 250px;
+	height: 300px;
 	resize: vertical;
+}
+
+#api-call-resource {
+	width: 280px;
 }

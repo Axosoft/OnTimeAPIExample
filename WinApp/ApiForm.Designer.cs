@@ -47,7 +47,7 @@
 			this.label5.Padding = new System.Windows.Forms.Padding(2, 10, 0, 0);
 			this.label5.Size = new System.Drawing.Size(784, 55);
 			this.label5.TabIndex = 8;
-			this.label5.Text = "OnTime Defects Explorer";
+			this.label5.Text = "Axosoft Defects Explorer";
 			// 
 			// panel1
 			// 
@@ -98,7 +98,7 @@
 			this.Controls.Add(this.label5);
 			this.Name = "ApiForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "OnTime API Example";
+			this.Text = "Axosoft API Example";
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -106,7 +106,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
 		private System.Windows.Forms.Label label5;
 		private ItemsControl ItemsControl;
 		private System.Windows.Forms.Panel panel1;

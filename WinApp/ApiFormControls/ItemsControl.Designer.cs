@@ -31,16 +31,17 @@
 			System.Windows.Forms.Label label1;
 			System.Windows.Forms.ToolStrip toolStrip2;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsControl));
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.ProjectComboBox = new System.Windows.Forms.ToolStripComboBox();
 			this.ItemsGridView = new System.Windows.Forms.DataGridView();
-			this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.project = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.AddButton = new System.Windows.Forms.ToolStripButton();
 			this.DeleteButton = new System.Windows.Forms.ToolStripButton();
 			this.AddAttachmentButton = new System.Windows.Forms.ToolStripButton();
-			this.OnTimeHostLabel = new System.Windows.Forms.Label();
+			this.AxosoftHostLabel = new System.Windows.Forms.Label();
+			this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.reportedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			label1 = new System.Windows.Forms.Label();
 			toolStrip2 = new System.Windows.Forms.ToolStrip();
 			toolStrip2.SuspendLayout();
@@ -88,7 +89,7 @@
 			this.ItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.name,
-            this.project});
+            this.reportedDate});
 			this.ItemsGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.ItemsGridView.Location = new System.Drawing.Point(21, 69);
 			this.ItemsGridView.Name = "ItemsGridView";
@@ -96,27 +97,6 @@
 			this.ItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.ItemsGridView.Size = new System.Drawing.Size(744, 240);
 			this.ItemsGridView.TabIndex = 9;
-			// 
-			// id
-			// 
-			this.id.DataPropertyName = "id";
-			this.id.HeaderText = "ID";
-			this.id.Name = "id";
-			this.id.Width = 50;
-			// 
-			// name
-			// 
-			this.name.DataPropertyName = "name";
-			this.name.HeaderText = "Name";
-			this.name.Name = "name";
-			this.name.Width = 500;
-			// 
-			// project
-			// 
-			this.project.DataPropertyName = "project";
-			this.project.HeaderText = "Project";
-			this.project.Name = "project";
-			this.project.Width = 200;
 			// 
 			// toolStrip1
 			// 
@@ -162,21 +142,44 @@
 			this.AddAttachmentButton.Text = "Add Attachment";
 			this.AddAttachmentButton.Click += new System.EventHandler(this.AddAttachment_Click);
 			// 
-			// OnTimeHostLabel
+			// AxosoftHostLabel
 			// 
-			this.OnTimeHostLabel.AutoSize = true;
-			this.OnTimeHostLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.OnTimeHostLabel.Location = new System.Drawing.Point(133, 20);
-			this.OnTimeHostLabel.Name = "OnTimeHostLabel";
-			this.OnTimeHostLabel.Size = new System.Drawing.Size(0, 13);
-			this.OnTimeHostLabel.TabIndex = 17;
+			this.AxosoftHostLabel.AutoSize = true;
+			this.AxosoftHostLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.AxosoftHostLabel.Location = new System.Drawing.Point(133, 20);
+			this.AxosoftHostLabel.Name = "AxosoftHostLabel";
+			this.AxosoftHostLabel.Size = new System.Drawing.Size(0, 13);
+			this.AxosoftHostLabel.TabIndex = 17;
+			// 
+			// id
+			// 
+			this.id.DataPropertyName = "Id";
+			this.id.HeaderText = "ID";
+			this.id.Name = "id";
+			this.id.Width = 50;
+			// 
+			// name
+			// 
+			this.name.DataPropertyName = "Name";
+			this.name.HeaderText = "Name";
+			this.name.Name = "name";
+			this.name.Width = 450;
+			// 
+			// reportedDate
+			// 
+			this.reportedDate.DataPropertyName = "ReportedDate";
+			dataGridViewCellStyle1.Format = "MM/dd/yyyy";
+			this.reportedDate.DefaultCellStyle = dataGridViewCellStyle1;
+			this.reportedDate.HeaderText = "Reported Date";
+			this.reportedDate.Name = "reportedDate";
+			this.reportedDate.Width = 200;
 			// 
 			// ItemsControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(toolStrip2);
-			this.Controls.Add(this.OnTimeHostLabel);
+			this.Controls.Add(this.AxosoftHostLabel);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.ItemsGridView);
 			this.Controls.Add(label1);
@@ -198,11 +201,11 @@
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripButton AddButton;
 		private System.Windows.Forms.ToolStripButton DeleteButton;
-		private System.Windows.Forms.Label OnTimeHostLabel;
+		private System.Windows.Forms.Label AxosoftHostLabel;
 		private System.Windows.Forms.ToolStripComboBox ProjectComboBox;
+		private System.Windows.Forms.ToolStripButton AddAttachmentButton;
 		private System.Windows.Forms.DataGridViewTextBoxColumn id;
 		private System.Windows.Forms.DataGridViewTextBoxColumn name;
-		private System.Windows.Forms.DataGridViewTextBoxColumn project;
-		private System.Windows.Forms.ToolStripButton AddAttachmentButton;
+		private System.Windows.Forms.DataGridViewTextBoxColumn reportedDate;
 	}
 }

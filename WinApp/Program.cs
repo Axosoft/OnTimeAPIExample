@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using OnTimeApi;
 using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using AxosoftAPI.NET.Models;
+using AxosoftAPI.NET.Helpers;
+using WinApp.Helpers;
 
 namespace WinApp
 {
@@ -21,9 +23,9 @@ namespace WinApp
 		{
 			// Initialize Settings from App.config
 			Settings = new Settings(
-				onTimeUrl: ConfigurationManager.AppSettings.Get("OnTimeUrl"),
-				clientId: ConfigurationManager.AppSettings.Get("ClientId"),
-				clientSecret: ConfigurationManager.AppSettings.Get("ClientSecret")
+				url: ConfigurationManager.AppSettings.Get("AxosoftAPI:Url"),
+				clientId: ConfigurationManager.AppSettings.Get("AxosoftAPI:ClientId"),
+				clientSecret: ConfigurationManager.AppSettings.Get("AxosoftAPI:ClientSecret")
 			);
 
 			// Set up exception handling
@@ -52,21 +54,21 @@ namespace WinApp
 
 		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			if(e.ExceptionObject is OnTimeException)
-				HandleUnhandledException((OnTimeException)e.ExceptionObject);
+			if(e.ExceptionObject is AxosoftAPIException<ErrorResponse>)
+				HandleUnhandledException((AxosoftAPIException<ErrorResponse>)e.ExceptionObject);
 		}
 
 		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			if(e.Exception is OnTimeException)
-				HandleUnhandledException((OnTimeException)e.Exception);
+			if (e.Exception is AxosoftAPIException<ErrorResponse>)
+				HandleUnhandledException((AxosoftAPIException<ErrorResponse>)e.Exception);
 		}
 
-		static void HandleUnhandledException(OnTimeException e)
+		static void HandleUnhandledException(AxosoftAPIException<ErrorResponse> e)
 		{
 			MessageBox.Show(
-				"An error occurred when accessing OnTime: " + e.Message,
-				"Error accessing OnTime API",
+				"An error occurred when accessing Axosoft: " + e.Message,
+				"Error accessing Axosoft API",
 				MessageBoxButtons.OK, 
 				MessageBoxIcon.Error);
 		}

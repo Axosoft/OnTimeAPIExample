@@ -6,9 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using OnTimeApi;
+using WebApp.Helpers;
 
-namespace APIExample
+namespace WebApp
 {
 	public class MvcApplication : System.Web.HttpApplication
 	{
@@ -24,7 +24,8 @@ namespace APIExample
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-			routes.MapRoute(
+			routes.MapRoute
+			(
 				"Default", // Route name
 				"{controller}/{action}/{id}", // URL with parameters
 				new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
@@ -40,13 +41,12 @@ namespace APIExample
 			RegisterRoutes(RouteTable.Routes);
 
 			// Initialize Settings from Web.config
-			Settings = new Settings(
-				onTimeUrl: ConfigurationManager.AppSettings.Get("OnTimeUrl"),
-				clientId: ConfigurationManager.AppSettings.Get("ClientId"),
-				clientSecret: ConfigurationManager.AppSettings.Get("ClientSecret")
+			Settings = new Settings
+			(
+				url: ConfigurationManager.AppSettings.Get("AxosoftAPI:Url"),
+				clientId: ConfigurationManager.AppSettings.Get("AxosoftAPI:ClientId"),
+				clientSecret: ConfigurationManager.AppSettings.Get("AxosoftAPI:ClientSecret")
 			);
-
 		}
-
 	}
 }

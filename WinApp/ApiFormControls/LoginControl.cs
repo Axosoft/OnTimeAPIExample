@@ -6,7 +6,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using OnTimeApi;
+using AxosoftAPI.NET;
+using AxosoftAPI.NET.Helpers;
+using AxosoftAPI.NET.Models;
 
 namespace WinApp
 {
@@ -14,16 +16,16 @@ namespace WinApp
 	{
 		public class LoginEventArgs : EventArgs
 		{
-			public OnTime OnTime;
+			public Proxy AxosoftProxy;
 
-			public LoginEventArgs(OnTime onTime)
+			public LoginEventArgs(Proxy axosoftProxy)
 			{
-				OnTime = onTime;
+				AxosoftProxy = axosoftProxy;
 			}
 		}
 
 		public Button AcceptButton { get { return LoginButton; } }
-		
+
 		public LoginControl()
 		{
 			InitializeComponent();
@@ -34,25 +36,35 @@ namespace WinApp
 
 		private void LoginButton_Click(object sender, EventArgs e)
 		{
-			var OnTime = new OnTime(Program.Settings);
+			var axosoftProxy = new Proxy
+			{
+				Url = Program.Settings.Url,
+				ClientId = Program.Settings.ClientId,
+				ClientSecret = Program.Settings.ClientSecret
+			};
+
 			try
 			{
-				OnTime.ObtainAccessTokenFromUsernamePassword(
+				axosoftProxy.ObtainAccessTokenFromUsernamePassword
+				(
 					username: LoginIdText.Text,
 					password: PasswordText.Text,
-					scope: "read write"
+					scope: ScopeEnum.ReadWrite
 				);
-			} catch (OnTimeException ex)
+			}
+			catch (AxosoftAPIException<ErrorResponse> ex)
 			{
 				MessageBox.Show(
-					"An error occurred when obtaining access token from OnTime: " + ex.Message,
+					"An error occurred when obtaining access token from Axosoft: " + ex.Message,
 					"Error obtaining access token",
-					MessageBoxButtons.OK, 
+					MessageBoxButtons.OK,
 					MessageBoxIcon.Error);
 			}
 
-			if(OnTime.HasAccessToken())
-				LoggedIn(this, new LoginEventArgs(OnTime));
+			if (!string.IsNullOrWhiteSpace(axosoftProxy.AccessToken))
+			{
+				LoggedIn(this, new LoginEventArgs(axosoftProxy));
+			}
 		}
 	}
 }

@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using OnTimeApi;
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections;
@@ -19,9 +18,9 @@ namespace WinApp
 		{
 			InitializeComponent();
 
-			// check to see if the ontime base URL, client id, and client secret have been entered into settings.
+			// check to see if the axosoft base URL, client id, and client secret have been entered into settings.
 			var settings = Program.Settings;
-			if(settings.OnTimeUrl == "https://someaccount.ontimenow.com/" ||
+			if(settings.Url == "https://someaccount.axosoft.com/" ||
 				settings.ClientId == "00000000-0000-0000-0000-000000000000" ||
 				settings.ClientSecret == "00000000-0000-0000-0000-000000000000")
 			{
@@ -40,7 +39,7 @@ namespace WinApp
 		void loginControl_LoggedIn(object sender, LoginControl.LoginEventArgs e)
 		{
 			loginControl.Visible = false;
-			ItemsControl.SetOnTime(e.OnTime);
+			ItemsControl.SetAxosoftProxy(e.AxosoftProxy);
 			ItemsControl.Visible = true;
 		}
 
