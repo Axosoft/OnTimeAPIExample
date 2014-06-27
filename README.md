@@ -1,14 +1,16 @@
 Axosoft API Example
 ------------------
 
-This repository contains two example applications that use the [Axosoft RESTful API][api_docs].
-One is "Defects Explorer", a C# Windows application allowing you to view, delete and add defects, as well as add attachments.
-The other is "API Explorer", an MVC web application that allows you to make arbitrary Axosoft API calls
-and shows verbatim JSON responses.
+This repository contains three example applications that use the [Axosoft RESTful API][api_docs].
+One is the "Defects Explorer", a C# Windows application allowing you to view, delete and add defects, as well as add attachments.
+The second is the "API Explorer", an MVC web application that allows you to make arbitrary Axosoft API calls
+and shows verbatim JSON responses. And the third is the "Console App", a simple console application that shows how to make
+several different API calls using the AxosoftAPI.NET library.
 
-Both examples are in a Visual Studio 2010 solution with the following projects:
+All three examples are in a Visual Studio 2012 solution with the following projects:
  * WinApp - the Defects Explorer example
  * WebApp - the API Explorer example
+ * ConsoleApp - the Console App example
 
 [api_docs]: http://developer.axosoft.com
 
@@ -31,7 +33,7 @@ trial account on http://www.axosoft.com/.
 
 License
 -------
-Copyright 2012 Axosoft, LLC
+Copyright 2014 Axosoft, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
