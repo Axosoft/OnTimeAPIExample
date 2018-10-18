@@ -33,7 +33,7 @@ trial account on http://www.axosoft.com/.
 
 License
 -------
-Copyright 2014 Axosoft, LLC
+Copyright 2018 Axosoft, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
